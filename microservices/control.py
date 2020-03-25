@@ -15,11 +15,16 @@ def get_articles(ticker):
         "Stock price": "",
         "General sentiment": "",
         "Stock sentiment": "",
-        "VIX", ""
+        "VIX": "",
+        "RSI": "",
+        "MACD_S": "",
+        "MACD": ""
     }
     
     #Alex stock details
     #detail = requests.get(url, headers=headers)
+
+
 
 
     #parallel 1
@@ -33,7 +38,7 @@ def get_articles(ticker):
     
     return_arr["General sentiment"] = sentiment
 
-
+    
     #stock sentiment
     stock = requests.get('http://localhost:5006/scrape/'+ticker, headers=headers)
     result = json.loads(stock.text)
@@ -42,9 +47,26 @@ def get_articles(ticker):
     sentiment2 += str(round(float(sentiment2),2))+"%"
     
     return_arr["Stock sentiment"] = sentiment2
+    
+
+    #VIX 
+    vix = requests.get('http://localhost:5007/vix', headers=headers)
+    result = json.loads(vix.text)
+    return_arr["VIX"] = result
+
+    
+    #indicators
+    indicators = requests.get('http://localhost:5007/vix', headers=headers)
+    indicators = json.loads(indicators.text)
+    #rsi = indicators['RSI']
+    #macds = indicators['MACD_S']
+    #macd = indicators['MACD']
+    #return_arr["VIX"] = rsi
+    #return_arr["VIX"] = macds
+    #return_arr["VIX"] = macd
 
     #return value and status
-    return json.dumps(result), 200   
+    return indicators, 200   
 
     
     #lcaolhost:5005/get/ticker

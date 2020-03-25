@@ -18,7 +18,7 @@ def scrape_stock_news(ticker):
         "2":'https://www.cityfalcon.com/webapi/v1/stories?api_key=Fma36p9juaU2qGTLUiEDpw&categories=mp,op,r&order_by=latest&all_languages=true&min_score=1&start_datetime=15%2F03%2F2020,+16:32&end_datetime=22%2F03%2F2020,+16:32&query=\
     %22'+ticker+'%22'
     }
-
+    
     #loop through both urls and append to string
     for x in range(1,3):
         page = requests.get(urls[str(x)])

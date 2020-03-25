@@ -15,11 +15,6 @@ def scrape_stories():
     soup = BeautifulSoup(page.text, 'html.parser').text
     parsed = json.loads(soup)
     stories = parsed['stories']
-
-    #titles = {"articles":[]}
-    
-    #for item in stories:
-        #titles['articles'].append(item['title'])
     
     return_str = ""
     for item in stories:
