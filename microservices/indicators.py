@@ -22,21 +22,21 @@ def get_indicator(ticker):
         "RSI": "",
         "MACD_S": "",
         "MACD": ""
-    }
+    }   
 
     response = requests.request("GET", url, headers=headers, params=querystring).text
     result = json.loads(response)['Technical Analysis: RSI']
     listed = list(result.values())
     result = listed[0]['RSI']
-    return_arr['RSI'] = result
+    return_arr['RSI'] = round(float(result),2)
     result = json.dumps(result, default=str)
 
     querystring = {"datatype":"json","interval":"daily","series_type":"close","function":"MACD","symbol":ticker,"time_period":"12"}
     response = requests.request("GET", url, headers=headers, params=querystring).text    
     result = json.loads(response)['Technical Analysis: MACD']
     listed = list(result.values())
-    return_arr['MACD_S'] = listed[0]['MACD_Signal']
-    return_arr['MACD'] = listed[0]['MACD']
+    return_arr['MACD_S'] = round(float(listed[0]['MACD_Signal']),2)
+    return_arr['MACD'] = round(float(listed[0]['MACD']),2)
     
     return json.dumps(return_arr), 200
     

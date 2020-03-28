@@ -18,15 +18,11 @@ def scrape_stories():
     
     return_str = ""
     for item in stories:
-        return_str += item['title']+","
+        return_str += item['title']+'~'
     return_str = return_str[:-1]
-    reply = json.dumps(return_str, default=str)
-    
 
-    #reply = jsonify(return_str)
-    #reply = json.dumps(return_str, default=str)
-    #data = {"articles":}
-    return reply, 200
+    return json.dumps(return_str), 200
+        
     
 if __name__ == "__main__":
     app.run(host='localhost', port=5003, debug=True)

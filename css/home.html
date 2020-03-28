@@ -2,10 +2,13 @@
 <!-- saved from url=(0027)https://www.discoverci.com/ -->
 <html>
   <head>
-      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <meta http-equiv="Content-Type" content="text/html">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <title>Home | G8T8</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
       <link rel="stylesheet" media="all" href="styles.css">
+      <link rel="stylesheet" href="scripts/three-dots.min.css">
+      <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
   </head>
 
   <!-- body starts -->
@@ -65,17 +68,19 @@
                     G8T8's stock research, valuation and analysis tools enable you to find, analyze, and track your investments like a pro.
                   </p>
                 </div> 
-                <div class="col-sm-10 center-block col-centered">
-                  <form action=".\search.html" accept-charset="UTF-8" method="get"><input name="utf8" type="hidden" value="✓">
+                <div class="col-sm-10 center-block col-centered" style="margin-bottom: 10px;">
+                  <!-- <form action="" accept-charset="UTF-8" method="get"><input name="utf8" type="hidden" value="✓"> -->
                     <div id="report-search">
                       <div class="col-sm-8 col-md-9" style="padding-right: 0px;">
-                      <div class="easy-autocomplete eac-description" style="width: 553px;"><input placeholder="Search Company or StockID" data-behavior="company-report-search" class="form-control input-lg topnavbar-search input-shadow b-r-md" id="report-search" type="text" name="term" autocomplete="off"><div class="easy-autocomplete-container" id="eac-container-report-search"><ul></ul></div></div>
-                      </div>
-                      <div class="col-sm-4 col-md-3" style="padding-right: 0px;">
-                        <button type="submit" class="btn btn-primary input-lg btn-primary-shadow subscribe-button">Search</button>
-                      </div>
+                        <div class="easy-autocomplete eac-description" style="width: 553px;">
+                          <input placeholder="Search Stock Ticker" id='search_input' class="form-control input-lg topnavbar-search input-shadow b-r-md" id="report-search" type="text" name="term" autocomplete="off"><div class="easy-autocomplete-container" id="eac-container-report-search"><ul></ul></div></div>
+                        </div>
+                        <div class="col-sm-4 col-md-3" style="padding-right: 0px;">
+                          <button type="submit" id='search_ticker' class="btn btn-primary input-lg btn-primary-shadow subscribe-button">Search</button>
+                        </div>
                     </div>
-                  </form>            
+                    <span id='error' style="font-size: large; display: none; margin-top: 5px; color: rgb(223, 62, 94);">Ticker not found!</span>
+                  <!-- </form> -->          
                 </div>
               </div>
             </div>
@@ -89,11 +94,15 @@
         <div class="backstretch">
           
           <img height="100%" width="100%" alt="Homepage Background Cover" class="homepage-bg" src="./resources/background.png">
-        
+          
         </div>
       </div>
     </div>
 <!-- lower section ends -->
 
 
-</body></html>
+</body>
+
+
+<script type="text/javascript" src="./scripts/check.js"></script>
+</html>
