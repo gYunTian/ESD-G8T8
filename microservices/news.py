@@ -1,10 +1,9 @@
 import requests
 import json
 from bs4 import BeautifulSoup
-from flask import Flask, jsonify
+from flask import Flask
 from flask_cors import CORS
 
-#import requests
 app = Flask(__name__)
 CORS(app)
 
@@ -20,10 +19,10 @@ def scrape_stories():
     for item in stories:
         return_str += item['title']+'~'
     return_str = return_str[:-1]
-
+    
     return json.dumps(return_str), 200
         
     
 if __name__ == "__main__":
-    app.run(host='localhost', port=5003, debug=True)
+    app.run(host='localhost', port=5010, debug=True)
     

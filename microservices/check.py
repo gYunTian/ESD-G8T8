@@ -10,7 +10,7 @@ CORS(app)
 @app.route('/check/<input>')
 def checker(input):
     url = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-profile"
-    
+
     querystring = {"symbol":input}
 
     headers = {
@@ -19,6 +19,7 @@ def checker(input):
     }
 
     response = requests.request("GET", url, headers=headers, params=querystring).text   
+    
     if (response):
         result = json.loads(response)['quoteType']
     else:
@@ -52,6 +53,6 @@ def checker(input):
         return "Not found",400
 
 if __name__ == "__main__":
-    app.run(host='localhost', port=5010, debug=True)
+    app.run(host='localhost', port=5003, debug=True)
 
 
