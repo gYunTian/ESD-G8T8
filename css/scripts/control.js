@@ -8,36 +8,103 @@ async function run() {
         const data = await res.json()
         let name = data['Name']
         let ticker = data['Ticker'].toUpperCase()
-        $('#company').attr({class:'col-md-7 center-block col-centered'}).text(name + ' ('+ticker+')')   
-
+        let current = data['Current']
+        let input = name.toUpperCase()+' ('+ticker+'): $'+current
+        $('#company').attr({class:'col-md-7 center-block col-centered'}).text(input)   
+        //$('#company').text("").attr({class:'col-md-7 center-block col-centered'}).append( "<p style='color: #fff;   '>"+input+"</p>" );
+            
         
         //loading
-        $('#stock_price').text('').prepend( "<i class='fa fa-refresh fa-cog fa-spin'></i> Computing Price..." );
-        $('#vix').text('').prepend( "<i class='fa fa-refresh fa-cog fa-spin'></i> Rerieving VIX..." );
-        $('#general').text('').prepend( "<i class='fa fa-refresh fa-cog fa-spin'></i> Computing Sentiment..." );
-        $('#stock_sentiment').text('').prepend( "<i class='fa fa-refresh fa-cog fa-spin'></i> Computing Stock Sentiment..." );
-        $('#indicator').text('').prepend( "<i class='fa fa-refresh fa-cog fa-spin'></i> Plotting Chart..." );
-        
-        main()
+        $('#stock_price').text('').prepend("<p class='saving'>Computing Price <span>.</span><span>.</span><span>.</span></p><i class='fa fa-refresh fa-cog fa-spin'></i> " );
+        $('#vix').text('').prepend( "<p class='saving'>Retrieving Volatility Index <span>.</span><span>.</span><span>.</span></p><i class='fa fa-refresh fa-cog fa-spin'>" );
+        $('#general').text('').prepend( "<p class='saving'>Retrieving News & Computing Sentiment <span>.</span><span>.</span><span>.</span></p><i class='fa fa-refresh fa-cog fa-spin'></i>" );
+        $('#stock_sentiment').text('').prepend( "<p class='saving'>Retrieving Stock News & Computing Sentiment <span>.</span><span>.</span><span>.</span></p><i class='fa fa-refresh fa-cog fa-spin'></i>" );
+        $('#indicator').text('').prepend( "<p class='saving'>Plotting Chart <span>.</span><span>.</span><span>.</span></p><i class='fa fa-refresh fa-cog fa-spin'></i>" );
+        main()//.then(clear())
     }           
 }
 
-$(document).ready(() => {
-    run()
-})
-
 async function main() {
-    const res = await fetch('http://localhost:5002/get_all', {mode: 'cors'})
-    
+    get2()
+    get3()
+    get4()
+    get5()
+}
+
+async function get2() {
+    const res = await fetch('http://localhost:5002/get2', {mode: 'cors'})
     if (res.status !== 200) {
         console.log('error')
     }
     else {
         const data = await res.json()
-        $('#vix').text('VIX: '+data['VIX'])
-        $('#general').text('General Sentiment: '+data['General sentiment'])
-        $('#stock_sentiment').text('Stock Sentiment: '+data['Stock sentiment'])
-        $('#indicator').text('Indicators: '+data['RSI'])
-        console.log(data)
+        $('#stock_sentiment').text('Stock News Sentiment:').prepend( "" );
+        if (data['sSentiment'].includes("-")) {
+            $('#stock_sentiment').append( "<p style='color: #F23535;'>"+data['sSentiment']+"</p>" );
+        }
+        else {
+            $('#stock_sentiment').append( "<p style='color: #71D980;'>"+data['sSentiment']+"</p>" );
+        }
     }    
 }
+
+async function get3() {
+    const res = await fetch('http://localhost:5002/get3', {mode: 'cors'})
+    if (res.status !== 200) {
+        $('#indicator').text('RSI Indicator:').prepend( "" );
+        $('#indicator').append( "<p>Exceeded API Limit of 5 Requests Per Minute</p>" );
+    }
+    else {
+        const data = await res.json()
+        $('#indicator').text('RSI Indicator:').prepend( "" );
+        $('#indicator').append( "<p>"+data['RSI']+"</p>" );
+    }    
+}
+
+async function get4() {
+    const res = await fetch('http://localhost:5002/get4', {mode: 'cors'})
+    if (res.status !== 200) {
+        console.log('error')
+    }
+    else {
+        const data = await res.json()
+        $('#general').text('General Market Sentiment:').prepend( "" );
+
+        if (data['gSentiment'].includes("-")) {
+            $('#general').append( "<p style='color: #F23535;'>"+data['gSentiment']+"</p>" );
+        }
+        else {
+            $('#general').append( "<p style='color: #71D980;'>"+data['gSentiment']+"</p>" );
+        }
+    }    
+}
+
+async function get5() {
+    const res = await fetch('http://localhost:5002/get5', {mode: 'cors'})
+    if (res.status !== 200) {
+        console.log('error')
+    }
+    else {
+        const data = await res.json()
+        $('#vix').text('Volatility Index:').prepend( "" );
+        
+        if (data['vix'] > 31) {
+            $('#vix').append( "<p style='color: #F23535;'>"+data['vix']+"</p>" );
+        }
+        else {
+            $('#vix').append( "<p style='color: #71D980;'>"+data['vix']+"</p>" );
+        }
+    }       
+}
+
+// async function clear() {
+//     const res = await fetch('http://localhost:5002/clear', {mode: 'cors'})
+//     if (res.status !== 200) {
+//         console.log('error')
+//     }
+//     console.log("Cleared!")
+// }
+
+$(document).ready(() => {
+    run()
+})

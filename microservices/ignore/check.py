@@ -31,7 +31,7 @@ def checker(input):
         remove = ["", "inc", "com", "corporation", "company", "corp", "ltd", "co", ""]
         result = [i for i in result if i not in remove]
         result = '+'.join(result)
-
+        current = json.loads(response)['price']['regularMarketOpen']['raw']
             
         
         # general = requests.get('http://localhost:5006/scrape/'+result, headers=headers)
@@ -48,7 +48,7 @@ def checker(input):
         # }
         
         # return_arr['Stock sentiment'] = sentiment
-        return {'Name': result}, 200
+        return {'Name': current}, 200
     else:
         return "Not found",400
 

@@ -9,16 +9,16 @@
     #https://javascript.info/promise-basics
     
     
-    import pika
+    #import pika
 
-    connection = pika.BlockingConnection()
+    # connection = pika.BlockingConnection()
 
-    channel = connection.channel()
+    # channel = connection.channel()
 
-    channel.exchange_declare()
+    # channel.exchange_declare()
 
-    channel.queue_declare()
+    # channel.queue_declare()
 
-    channel.queue_bind()
+    # channel.queue_bind()
 
     

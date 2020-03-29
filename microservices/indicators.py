@@ -25,7 +25,13 @@ def get_indicator(ticker):
     }   
 
     response = requests.request("GET", url, headers=headers, params=querystring).text
+
+    if (not 'Technical Analysis: RSI' in response or 'Message' in response):
+        return json.dumps({'exceeded': True}), 400
+    
     result = json.loads(response)['Technical Analysis: RSI']
+
+
     listed = list(result.values())
     result = listed[0]['RSI']
     return_arr['RSI'] = round(float(result),2)
@@ -33,6 +39,10 @@ def get_indicator(ticker):
 
     querystring = {"datatype":"json","interval":"daily","series_type":"close","function":"MACD","symbol":ticker,"time_period":"12"}
     response = requests.request("GET", url, headers=headers, params=querystring).text    
+
+    if (not 'Technical Analysis: MACD' in response or 'Message' in response):
+        return json.dumps({'exceeded': True}), 400
+
     result = json.loads(response)['Technical Analysis: MACD']
     listed = list(result.values())
     return_arr['MACD_S'] = round(float(listed[0]['MACD_Signal']),2)
