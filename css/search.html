@@ -8,10 +8,11 @@
       <title>Company Search Results | G8T8</title>
       <link rel="icon" type="image/png" href="./resources/g8t8.png">
       <link rel="stylesheet" media="all" href="./search_files/application-f856fa345de0ec2f4fe1dd4f4bf20d11398b4c689a39df184edb3529b69ca4b2.css">  
-      <link rel="stylesheet" href="scripts/three-dots.min.css">
-      <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+      <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
       <style>
           .grid-container {
             display: grid;
@@ -20,85 +21,66 @@
             margin: 20px;
             padding: 20px;
           }
+
           .grid-container1 {
             display: grid;
-            grid-template-columns: auto;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
             background-color: rgb(241, 244, 247), 179, 202);
+            margin: 20px;
             padding: 20px;
           }
+            
           .grid-item {
             background-color: rgba(255, 255, 255, 0.8);
             border: 1px solid rgba(0, 0, 0, 0.8);
             padding: 20px;
-            margin: 20px;
+            margin:   2px;
             font-size: 30px;
             text-align: center;
           }
 
+          .grid-special {
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            margin:   2px;
+            font-size: 30px;
+            text-align: center;
+            grid-column-end: span 3;
+          }
+
           body {background:grey; font-family:helvetica;font-size:72px;}
           @keyframes blink {
-              /**
-              * At the start of the animation the dot
-              * has an opacity of .2
-              */
               0% {
                 opacity: .2;
               }
-              /**
-              * At 20% the dot is fully visible and
-              * then fades out slowly
-              */
               20% {
                 opacity: 1;
               }
-              /**
-              * Until it reaches an opacity of .2 and
-              * the animation can start again
-              */
               100% {
                 opacity: .2;
               }
           }
 
           .saving span {
-              /**
-              * Use the blink animation, which is defined above
-              */
               animation-name: blink;
-              /**
-              * The animation should take 1.4 seconds
-              */
               animation-duration: 1.4s;
-              /**
-              * It will repeat itself forever
-              */
               animation-iteration-count: infinite;
-              /**
-              * This makes sure that the starting style (opacity: .2)
-              * of the animation is applied before the animation starts.
-              * Otherwise we would see a short flash or would have
-              * to set the default styling of the dots to the same
-              * as the animation. Same applies for the ending styles.
-              */
               animation-fill-mode: both;
           }
 
           .saving span:nth-child(2) {
-              /**
-              * Starts the animation of the third dot
-              * with a delay of .2s, otherwise all dots
-              * would animate at the same time
-              */
               animation-delay: .2s;
           }
 
           .saving span:nth-child(3) {
-              /**
-              * Starts the animation of the third dot
-              * with a delay of .4s, otherwise all dots
-              * would animate at the same time
-              */
               animation-delay: .4s;
+          }
+
+          .visual {
+            border:2px solid;
+            font-weight:400;
+            border-color:#132235
           }
         </style>
   </head>
@@ -115,24 +97,23 @@
         <div class="heroContent"><div class="container">
           <div class="row">
             <h1><strong><div class="col-md-7 center-block col-centered" id='company'>Company Name<br></div></strong></h1>
-            <a class="btn btn-outline-visualize nav-btn" style="margin-right: 1em; margin-top: 3px;" href="">Add to Watchlist</a>
-            <a class="btn btn-outline-visualize nav-btn" style="margin-right: 1em; margin-top: 3px; " href="">Buy</a>
-            <a class="btn btn-outline-visualize nav-btn" style="margin-right: 1em; margin-top: 3px;" href="">Sell</a>
+            <!-- <a class="btn btn-outline-visualize nav-btn" style="margin-right: 1em; margin-top: 3px;" href="#">Add to Watchlist</a> -->
+            <a class="btn btn-outline-visualize nav-btn" style="margin-right: 1em; margin-top: 3px; width: 15%; font-size: 20px; color: #71D980;" href="#">Buy</a>
+            <a class="btn btn-outline-visualize nav-btn" style="margin-right: 1em; margin-top: 3px; width: 15%; font-size: 20px; color: #F23535;" href="#">Sell</a>
           </div>
         </div></div>
     </section>
-    
-
 
     <div class="grid-container">
-      <div class="grid-item" id='stock_price'>Stock</div>
-      <div class="grid-item" id='vix'>Volatility Index<br><br><br></div>
-      <div class="grid-item" id='general'>General Sentiment<br><br><br></div>
-      <div class="grid-item" id='stock_sentiment'>Stock Sentiment<br><br><br></div>
+      <div class="grid-item visual" id='stock_price' data-toggle="tooltip" title="The price is computed using Dicounted Cash Flow method. This value is based on historical data.">Stock</div>
+      <div class="grid-item visual" id='vix' data-toggle="tooltip" title="The volatility index measures the market volatility. A value above 31 suggest high volatilty. ">Volatility Index<br><br><br></div>
+      <div class="grid-item visual" id='general' data-toggle="tooltip" title="This value measures the general market sentiment. ">General Sentiment<br><br><br></div>
+      <div class="grid-item visual" id='stock_sentiment' data-toggle="tooltip" title="This value measures the specific stock news sentiment.">Stock Sentiment<br><br><br></div>
     </div>
-    <div class="grid-container1">
-      <div class="grid-item" id='indicator'>Technical Indicators<br><br><br></div>
-    </div>
+    <div class="grid-container1" id='top'>
+      <div class="grid-item grid-special visual" id='indicator' data-toggle="tooltip" title="This graph visualizes the historical price and simple moving average.">Chart<br><br><br></div>
+      <div class="grid-item visual  " id='indicator2' data-toggle="tooltip" title="These indicators measures the price movement.">Indicators<br><br><br></div>
+    </div>  
 
     <section class="blue-section contact">
       <div class="container">

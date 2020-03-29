@@ -126,7 +126,15 @@ def get5():
     result = json.loads(vix.text)
     return json.dumps({'vix': result}), 200 
 
-# #step 8
+#step 8
+@app.route('/get6')
+def clear():
+    #graph div
+    div = requests.get('http://localhost:5020/graph/'+data.Ticker, headers=headers)
+    result = json.loads(div.text)
+    return json.dumps({'data': result}), 200 
+    
+# #step 9
 # @app.route('/clear')
 # def clear():
 #     data.Name = None

@@ -1,3 +1,4 @@
+
 async function run() {
     const res = await fetch('http://localhost:5002/initialize', {mode: 'cors'})
     
@@ -20,15 +21,17 @@ async function run() {
         $('#general').text('').prepend( "<p class='saving'>Retrieving News & Computing Sentiment <span>.</span><span>.</span><span>.</span></p><i class='fa fa-refresh fa-cog fa-spin'></i>" );
         $('#stock_sentiment').text('').prepend( "<p class='saving'>Retrieving Stock News & Computing Sentiment <span>.</span><span>.</span><span>.</span></p><i class='fa fa-refresh fa-cog fa-spin'></i>" );
         $('#indicator').text('').prepend( "<p class='saving'>Plotting Chart <span>.</span><span>.</span><span>.</span></p><i class='fa fa-refresh fa-cog fa-spin'></i>" );
+        $('#indicator2').text('').prepend( "<p class='saving'>Retrieving Indicators <span>.</span><span>.</span><span>.</span></p><i class='fa fa-refresh fa-cog fa-spin'></i>" );
         main()//.then(clear())
     }           
-}
+}   
 
 async function main() {
     get2()
-    get3()
     get4()
     get5()
+    get3()
+    get6()
 }
 
 async function get2() {
@@ -51,13 +54,15 @@ async function get2() {
 async function get3() {
     const res = await fetch('http://localhost:5002/get3', {mode: 'cors'})
     if (res.status !== 200) {
-        $('#indicator').text('RSI Indicator:').prepend( "" );
-        $('#indicator').append( "<p>Exceeded API Limit of 5 Requests Per Minute</p>" );
+        $('#indicator2').text('Indicators:').prepend( "" );
+        $('#indicator2').append( "<p>Exceeded API Limit of 5 Requests Per Minute</p>" );
     }
     else {
         const data = await res.json()
-        $('#indicator').text('RSI Indicator:').prepend( "" );
-        $('#indicator').append( "<p>"+data['RSI']+"</p>" );
+        $('#indicator2').text('Indicators:').prepend( "" );
+        $('#indicator2').append( "<br><br><br><br>s<p>RSI: "+data['RSI']+"</p><br>" );
+        $('#indicator2').append( "<p>MACD: "+data['MACD']+"</p><br>" );
+        $('#indicator2').append( "<p>MACDS: "+data['MACD_S']+"</p><br>" );
     }    
 }
 
@@ -65,7 +70,7 @@ async function get4() {
     const res = await fetch('http://localhost:5002/get4', {mode: 'cors'})
     if (res.status !== 200) {
         console.log('error')
-    }
+    }   
     else {
         const data = await res.json()
         $('#general').text('General Market Sentiment:').prepend( "" );
@@ -97,6 +102,18 @@ async function get5() {
     }       
 }
 
+async function get6() {
+    const res = await fetch('http://localhost:5002/get6', {mode: 'cors'})
+    if (res.status !== 200) {
+        console.log('error')
+    }
+    else {
+        const data = await res.json()
+        $('#indicator').text('').prepend( "Chart (300 days):" );  
+        $('#indicator').append(data['data']);
+    }       
+}
+
 // async function clear() {
 //     const res = await fetch('http://localhost:5002/clear', {mode: 'cors'})
 //     if (res.status !== 200) {
@@ -107,4 +124,5 @@ async function get5() {
 
 $(document).ready(() => {
     run()
+    $('[data-toggle="tooltip"]').tooltip();  
 })

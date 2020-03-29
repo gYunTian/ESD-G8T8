@@ -23,12 +23,12 @@ def get_indicator(ticker):
         "MACD_S": "",
         "MACD": ""
     }   
-
-    response = requests.request("GET", url, headers=headers, params=querystring).text
+    
+    response = requests.request("GET", url, headers=headers, params=querystring, timeout=10).text
 
     if (not 'Technical Analysis: RSI' in response or 'Message' in response):
         return json.dumps({'exceeded': True}), 400
-    
+
     result = json.loads(response)['Technical Analysis: RSI']
 
 
@@ -36,7 +36,7 @@ def get_indicator(ticker):
     result = listed[0]['RSI']
     return_arr['RSI'] = round(float(result),2)
     result = json.dumps(result, default=str)
-
+    
     querystring = {"datatype":"json","interval":"daily","series_type":"close","function":"MACD","symbol":ticker,"time_period":"12"}
     response = requests.request("GET", url, headers=headers, params=querystring).text    
 
