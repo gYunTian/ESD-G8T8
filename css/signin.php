@@ -1,3 +1,7 @@
+<?php 
+  ob_start();
+  session_start(); ?>
+
 <!DOCTYPE html>
 <!-- saved from url=(0040)https://www.discoverci.com/users/sign_in -->
 <html>
@@ -28,7 +32,7 @@
   <div class="row">
   <div class="col-xs-12">
     <div class="center-brand-container">
-      <a href="https://www.discoverci.com/"><img height="250" width="250" src="./resources/g8t8.png" alt="Logo"></a>
+      <a href=""><img height="250" width="250" src="./resources/g8t8.png" alt="Logo"></a>
     </div>
   </div>
   <div class="col-xs-12">
@@ -37,16 +41,55 @@
         <div class="col-md-6 center-block col-centered">
           <div class="ibox-content center-carousel">
             <h3>Sign In</h3>
-            <form novalidate="novalidate" class="simple_form new_user" id="new_user" action="./signin.html" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓"><input type="hidden" name="authenticity_token" value="+KDrxmz7YD5SInSxknV8T8EBscDlK4FY0jkrzAWXu2zIVHMwMO5gwfnO+Xf1K8eNE2oQ24DfwlpCyKeAjEUTkg==">
+            <form class="simple_form new_user" method="post" action="">
             
               <div class="form-group">
-                <div class="form-group email required user_email"><input class="form-control string email required" autofocus="autofocus" required="required" aria-required="true" placeholder="Username" type="text" value="" name="" id="username"></div>
+                <div class="form-group email required user_email">
+                  <input class="form-control string email required" autofocus="autofocus" required="required" aria-required="true" placeholder="Username" type="text" name="username" id="username">
+                </div>
               </div>
               <div class="form-group">
-                <div class="form-group password required user_password"><input class="form-control password required" required="required" aria-required="true" placeholder="Password" type="password" name="" id="password"></div>
+                <div class="form-group password required user_password">
+                  <input class="form-control password required" required="required" aria-required="true" placeholder="Password" type="text" name="password" id="password">
+                </div>
               </div>
-              <input type="submit" name="signin" value="Sign in" class="btn btn-default btn-primary block full-width m-b font-bold signup-btn" data-disable-with="Sign in">
-            </form>            
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                  <div class="form-group boolean optional user_remember_me"><div class="checkbox"><input value="0" type="hidden" name="user[remember_me]"><label class="boolean optional" for="user_remember_me"><input class="boolean optional" type="checkbox" value="1" name="user[remember_me]" id="user_remember_me">Remember me</label></div></div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <div class="checkbox text-right">
+                      <a class="float-right" href="https://www.discoverci.com/users/password/new">Forgot password?</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <input type="submit" id="signin" value="Sign in" class="btn btn-default btn-primary block full-width m-b font-bold signup-btn" data-disable-with="Sign in">
+            </form>          
+              
+            <?php
+
+              $message="";
+
+              if(count($_POST)>0) {
+                $conn = mysqli_connect("localhost","root","","g8t8");
+                $result = mysqli_query($conn,"SELECT * FROM users WHERE username='" . $_POST["username"] . "' and password = '". $_POST["password"]."'");
+                $count  = mysqli_num_rows($result);
+                if($count==0) {
+                  $message = "Invalid Username or Password.";
+                } else {
+                  $_SESSION['username'] = $_POST["username"];
+                  header("Location:account.php");
+                  ob_end_flush();
+                  $message = "Successfully authenticated.";
+                }
+              }
+            ?>
+          
+          <?php echo "<p align = 'center'>".$message."</p>"; ?>
           
           </div>
         </div>
@@ -54,6 +97,6 @@
     </div>
   </div>
 </div>
-  
+
 </body>
 </html>

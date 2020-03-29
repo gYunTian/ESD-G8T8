@@ -11,7 +11,7 @@ async function run() {
         let ticker = data['Ticker'].toUpperCase()
         let current = data['Current']
         let input = name.toUpperCase()+' ('+ticker+'): $'+current
-        $('#company').attr({class:'col-md-7 center-block col-centered'}).text(input)   
+        $('#company').attr({class:'col-md-12 center-block col-centered'}).text(input)   
         //$('#company').text("").attr({class:'col-md-7 center-block col-centered'}).append( "<p style='color: #fff;   '>"+input+"</p>" );
             
         
@@ -60,7 +60,7 @@ async function get3() {
     else {
         const data = await res.json()
         $('#indicator2').text('Indicators:').prepend( "" );
-        $('#indicator2').append( "<br><br><br><br>s<p>RSI: "+data['RSI']+"</p><br>" );
+        $('#indicator2').append( "<br><br><br><br><p>RSI: "+data['RSI']+"</p><br>" );
         $('#indicator2').append( "<p>MACD: "+data['MACD']+"</p><br>" );
         $('#indicator2').append( "<p>MACDS: "+data['MACD_S']+"</p><br>" );
     }    
