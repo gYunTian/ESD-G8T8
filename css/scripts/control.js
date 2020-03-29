@@ -60,9 +60,9 @@ async function get3() {
     else {
         const data = await res.json()
         $('#indicator2').text('Indicators:').prepend( "" );
-        $('#indicator2').append( "<br><br><br><br><p>RSI: "+data['RSI']+"</p><br>" );
-        $('#indicator2').append( "<p>MACD: "+data['MACD']+"</p><br>" );
-        $('#indicator2').append( "<p>MACDS: "+data['MACD_S']+"</p><br>" );
+        $('#indicator2').append( "<br><br><br><br><p style='font-weight: bold;'>RSI:</p><p>"+data['RSI']+"</p><br>" );
+        $('#indicator2').append( "<p style='font-weight: bold;'>MACD:</p><p>"+data['MACD']+"</p><br>" );
+        $('#indicator2').append( "<p style='font-weight: bold;'>MACDS:</p><p>"+data['MACD_S']+"</p><br>" );
     }    
 }
 

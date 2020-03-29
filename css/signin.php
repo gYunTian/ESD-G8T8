@@ -32,7 +32,7 @@
   <div class="row">
   <div class="col-xs-12">
     <div class="center-brand-container">
-      <a href=""><img height="250" width="250" src="./resources/g8t8.png" alt="Logo"></a>
+      <a href="./home.html"><img height="250" width="250" src="./resources/g8t8.png" alt="Logo"></a>
     </div>
   </div>
   <div class="col-xs-12">
