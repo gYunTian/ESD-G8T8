@@ -55,7 +55,7 @@ async function get3() {
     const res = await fetch('http://localhost:5002/get3', {mode: 'cors'})
     if (res.status !== 200) {
         $('#indicator2').text('Indicators:').prepend( "" );
-        $('#indicator2').append( "<p>Exceeded API Limit of 5 Requests Per Minute</p>" );
+        $('#indicator2').append( "</br></br><p>Exceeded API Limit of 5 Requests Per Minute</p>" );
     }
     else {
         const data = await res.json()
