@@ -79,7 +79,7 @@
                 $result = mysqli_query($conn,"SELECT * FROM users WHERE username='" . $_POST["username"] . "' and password = '". $_POST["password"]."'");
                 $count  = mysqli_num_rows($result);
                 if($count==0) {
-                  $message = "Invalid Username or Password.";
+                  $message = "<p style = 'color:red;text-align:center'>Invalid Username or Password.</p>";
                 } else {
                   $_SESSION['username'] = $_POST["username"];
                   header("Location:account.php");
@@ -89,7 +89,7 @@
               }
             ?>
           
-          <?php echo "<p align = 'center'>".$message."</p>"; ?>
+          <?php echo $message; ?>
           
           </div>
         </div>
