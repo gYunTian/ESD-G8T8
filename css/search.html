@@ -56,6 +56,10 @@
             font-size: 150%;
             text-align: center;
           }
+
+          .color::-webkit-input-placeholder {
+              color: #F23535
+          }
         </style>
 
         <script>
@@ -92,19 +96,26 @@
         <div class="heroContent"><div class="container">
           <div class="row">
             <h1><strong><div class="col-md-12 center-block col-centered" style="padding: 5px" id='company'>Company Name<br></div></strong></h1>
-            <!-- <a class="btn btn-outline-visualize nav-btn" style="margin-right: 1em; margin-top: 3px;" href="#">Add to Watchlist</a> -->
-            <div class="col-md-12 center-block col-centered" style="padding: 10px">
-              <a class="btn btn-outline-visualize nav-btn" style="margin-right: 1em; margin-top: 3px; width: 15%; font-size: 20px; color: #71D980;" href="#">Buy</a>
-              <a class="btn btn-outline-visualize nav-btn" style="margin-right: 1em; margin-top: 3px; width: 15%; font-size: 20px; color: #F23535;" href="#">Sell</a>
+            <div class="col-md-12 center-block col-centered" style="padding: 10px" id="action-bar">           
+                <input placeholder="Quantity " id='amt_box' class="form-control input-lg topnavbar-search input-shadow b-r-md" type="number" style="width: 15% !important; display: inline-block !important; margin-right: 1em !important; margin-top: 3px !important;font-size: 20px !important; vertical-align: top !important; height: 43.5px !important;" pattern="[1-9]{3}" min="1" onkeydown="return event.keyCode !== 69 && event.keyCode !== 189">
+
+              <button class="btn btn-outline-visualize nav-btn action" id='buy' name='buy' style="margin-right: 1em; margin-top: 3px; width: 15%; font-size: 20px; color: #71D980; vertical-align: top !important;">Buy</button>
+
+              <button class="btn btn-outline-visualize nav-btn action" id='sell' name='sell' style="margin-right: 1em; margin-top: 3px; width: 15%; font-size: 20px; color: #F23535; vertical-align: top !important;" >Sell</button>
+
             </div>
-            <p style="font-size:130%;"><div class="col-md-12 center-block col-centered" style="padding: 5px" id="txt"></div></p>
+            
+            </div>
+            <p style="font-size:130%;" id='change'><div class="col-md-12 center-block col-centered" style="padding: 5px" id="txt"></div></p>
           </div>
         </div></div>
     </section>
 
     <div class="container-fluid">
       <div class="col-md-6 visual" id='stock_price' data-toggle="tooltip" title="The price is computed using Dicounted Cash Flow method. This value is based on historical data." style="background-color:#e5e6e6; padding: 80px">Stock</div>
+
       <div class="col-md-6 visual" id='vix' data-toggle="tooltip" title="The volatility index measures the market volatility. A value above 31 suggest high volatilty. " style="background-color:#e5e6e6; padding: 80px">Volatility Index</div>
+
       <div class="col-md-6 visual" id='general' data-toggle="tooltip" title="This value measures the general market sentiment. " style="background-color:#e5e6e6; padding: 80px">General Sentiment</div>
       <div class="col-md-6 visual" id='stock_sentiment' data-toggle="tooltip" title="This value measures the specific stock news sentiment." style="background-color:#e5e6e6; padding: 80px">Stock Sentiment</div>
       <div class="col-md-12 visual">
@@ -125,5 +136,6 @@
     </section>
     
     <script type="text/javascript" src="./scripts/control.js"></script>
+  
   </body>
 </html>
