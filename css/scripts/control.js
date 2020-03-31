@@ -114,6 +114,10 @@ async function get6() {
     }       
 }
 
+async function get7() {
+    
+}
+
 // async function clear() {
 //     const res = await fetch('http://localhost:5002/clear', {mode: 'cors'})
 //     if (res.status !== 200) {
@@ -124,5 +128,35 @@ async function get6() {
 
 $(document).ready(() => {
     run()
-    $('[data-toggle="tooltip"]').tooltip();  
+    $('[data-toggle="tooltip"]').tooltip()
+
+
+    $(".action").click(function() {
+        var amt = $('#amt_box').val()
+        if (amt == "") {
+            $('#amt_box').attr("placeholder", "Invalid Input!").addClass('color')
+            return
+        }
+
+        var action = $(this).attr('id');
+        $('#amt_box').attr('disabled',true);
+        if (action == 'buy') {
+            $(this).attr('disabled',true).text('').prepend( "<i class='fa fa-refresh fa-spin'></i> Processing.." );
+            $('#sell').attr('disabled',true);
+        }
+        else {
+            $(this).attr('disabled',true).text('').prepend( "<i class='fa fa-refresh fa-spin'></i> Processing.." ); 
+            $('#buy').attr('disabled',true);   
+        }
+        // request
+        get7()
+        //stop
+        console.log('qdf')
+        $('#change').text('Order submitted!').delay(3000).fadeOut('slow');
+        $(this).attr('disabled',false).text('Buy').prepend( "" ); 
+        $('#buy').attr('disabled',false); 
+        $('#sell').attr('disabled',false); 
+
+    });
 })
+
