@@ -1,7 +1,8 @@
-from flask import Flask, jsonify, make_response
+from flask import Flask, jsonify, make_response, request
+import pika, os, logging
 import json
 import requests
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 CORS(app)
@@ -128,11 +129,91 @@ def get5():
 
 #step 8
 @app.route('/get6')
-def clear():
+def get6():
     #graph div
     div = requests.get('http://localhost:5020/graph/'+data.Ticker, headers=headers)
     result = json.loads(div.text)
     return json.dumps({'data': result}), 200 
+
+#works
+# @app.route('/get7/<input>')
+# def get7(input):
+#     #graph div
+#     item = str(input)
+#     return jsonify({"name": item}), 200
+
+@app.route('/get7', methods=['POST'])
+def get7():
+    #graph div
+    data = json.loads(request.data)
+    ticker = data['ticker']
+
+    url = os.environ.get('CLOUDAMQP_URL', 'amqp://fxpccdrd:NJiudHhok5U_IISeM9pRqumppBFsk5Q1@wildboar.rmq.cloudamqp.com/fxpccdrd')
+    params = pika.URLParameters(url)
+
+
+    connection = pika.BlockingConnection(params) # Connect to CloudAMQP
+    channel = connection.channel() # start a channel
+    channel.queue_declare(queue='hello') # Declare a queue
+    #channel.queue_declare(queue='transaction', durable=True) # Declare a queue
+
+    channel.basic_publish(exchange='',
+                        routing_key='hello',
+                        body=ticker)
+    print(" [x] Sent 'Hello World!!!!!'")
+    connection.close()
+
+
+    return request.data, 200
+    
+#step 9
+# @app.route("/process/<asd>")
+# def process(asd):
+#     # url = os.environ.get('CLOUDAMQP_URL', 'amqp://fxpccdrd:NJiudHhok5U_IISeM9pRqumppBFsk5Q1@wildboar.rmq.cloudamqp.com/fxpccdrd')
+#     # params = pika.URLParameters(url)
+#     # params.socket_timeout = 5
+
+    
+#     data = asd.split('-')
+    
+
+#     # connection = pika.BlockingConnection(params) # Connect to CloudAMQP
+#     # channel = connection.channel() # start a channel
+#     # channel.queue_declare(queue='transaction') # Declare a queue
+
+#     # channel.basic_publish(exchange='', routing_key='stockprocess', body=data)
+#     # print ("[x] Transaction Process sent to consumer - "+data['action']+' '+data['ticker'])
+#     # connection.close()
+    
+#     response = jsonify({'some': data})
+#     response.headers.add('Access-Control-Allow-Origin', '*')
+#     return response, 200
+
+
+
+
+# cors = CORS(app, resources={r"/process": {"origins": "http://localhost:port"}})
+
+# @app.route('/process', methods=['POST', 'GET','OPTIONS'])
+# @cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
+# def process():
+#     # url = os.environ.get('CLOUDAMQP_URL', 'amqp://fxpccdrd:NJiudHhok5U_IISeM9pRqumppBFsk5Q1@wildboar.rmq.cloudamqp.com/fxpccdrd')
+#     # params = pika.URLParameters(url)
+#     # params.socket_timeout = 5
+
+#     # connection = pika.BlockingConnection(params) # Connect to CloudAMQP
+#     # channel = connection.channel() # start a channel
+#     # channel.queue_declare(queue='transaction') # Declare a queue
+
+#     # channel.basic_publish(exchange='', routing_key='stockprocess', body=data)
+#     # print ("[x] Transaction Process sent to consumer - "+data['action']+' '+data['ticker'])
+#     # connection.close()
+    
+#     response = jsonify({'some': 'data'}) 
+#     response.header.Add("Access-Control-Allow-Origin", "*")
+#     response.header.Add("Access-Control-Allow-Methods", "DELETE, POST, GET, OPTIONS")
+#     response.header.Add("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With")
+#     return response, 200
     
 # #step 9
 # @app.route('/clear')

@@ -114,20 +114,116 @@ async function get6() {
     }       
 }
 
-async function get7() {
-    
+
+async function get7(ticker, name, amt, current, action) {
+    value = 'aapl'
+    const res = await fetch('http://localhost:5002/get7', {mode: 'cors', method: 'POST', body: JSON.stringify({'ticker': ticker, 'name': name, 'amt': amt, 'current': current, 'action': action})})
+
+    if (res.status !== 200) {
+        console.log('error')
+    }   
+    else {
+        const data = await res.json()
+        let data1 = JSON.stringify(data)
+        console.log(data1)
+        //function ends
+    }
 }
 
-// async function clear() {
-//     const res = await fetch('http://localhost:5002/clear', {mode: 'cors'})
+//works
+
+// async function get7() {
+//     value = 'aapl'
+//     const res = await fetch('http://localhost:5002/get7/'+value, {mode: 'cors'})
+    
+//     if (res.status !== 200) {
+//         console.log('error')
+//     }   
+//     else {
+//         const data = await res.json()
+//         console.log(data)
+//         //function ends
+//     }
+// }
+
+// async function get7(ticker, name, amt, current, action) {
+//     let data = ticker+'-'+name+'-'+amt+'-'+current+'-'+action
+//     const res = await fetch('http://localhost:5002/process/'+data, {mode: 'cors'})
 //     if (res.status !== 200) {
 //         console.log('error')
 //     }
-//     console.log("Cleared!")
+//     else {
+//         const data = await res.json()
+//         console.log(data)
+//     }       
+//     // const result = await fetch('http://localhost:5100/process', 
+//     //     method: "POST",
+//     //     body: JSON.stringify({
+//     //         a: 1, b: 2
+//     //     }),
+//     //     mode: 'no-cors'
+//     // )
+
+//     // var request = new Request('http://localhost:5002/process', {
+//     //     method: 'GET', 
+//     //     mode: 'cors', 
+//     // })
+
+//     // const result = await fetch(request)
+//     // const data = result.json()
+//     // console.log(data)
+
 // }
 
+// async function get7() {
+//     //const res = await fetch('http://localhost:5002/process', {mode: 'cors',  method: "POST", json: JSON.stringify({'asd':'qwe'})})
+//     // const res = await fetch( 'http://localhost:5002/process', {
+//     //     headers: {
+//     //       'Accept': 'application/json',
+//     //       'Content-Type': 'application/json'
+//     //     }, 
+//     //     method: 'POST',
+//     //     body: {
+//     //       'user1':'1234'
+//     //     }
+//     // });
+
+//     // if (res.status !== 200) {
+//     //     console.log('error')
+//     // }
+//     // else {
+//     //     const data = await res.json()
+//     //     console.log(data)
+//     // }       
+//     fetch("http://localhost:5002/process", {
+//         method: "post",
+//         mode: 'cors',
+//         headers: {
+//           'Accept': 'application/json',
+//           'Content-Type': 'application/json'
+//         },
+        
+//         //make sure to serialize your JSON body
+//         body: JSON.stringify({
+//           'name': 'myName',
+//           'password': 'myPassword'
+//         })
+//       })
+//       .then( (response) => { 
+//          //do something awesome that makes the world a better place
+//          const data = response.json()
+//          console.log(data)
+//       });
+
+
+// }
+
+
+
+
+//document loaded
 $(document).ready(() => {
-    run()
+    // run()
     $('[data-toggle="tooltip"]').tooltip()
 
 
@@ -137,8 +233,10 @@ $(document).ready(() => {
             $('#amt_box').attr("placeholder", "Invalid Input!").addClass('color')
             return
         }
-
+        var ticker = 'aapl'
+        var name = 'apple'
         var action = $(this).attr('id');
+        var current = 21
         $('#amt_box').attr('disabled',true);
         if (action == 'buy') {
             $(this).attr('disabled',true).text('').prepend( "<i class='fa fa-refresh fa-spin'></i> Processing.." );
@@ -149,13 +247,9 @@ $(document).ready(() => {
             $('#buy').attr('disabled',true);   
         }
         // request
-        get7()
-        //stop
-        console.log('qdf')
-        $('#change').text('Order submitted!').delay(3000).fadeOut('slow');
-        $(this).attr('disabled',false).text('Buy').prepend( "" ); 
-        $('#buy').attr('disabled',false); 
-        $('#sell').attr('disabled',false); 
+        console.log('we heres')
+        get7(ticker, name, amt, current, action)
+        //get7()
 
     });
 })
