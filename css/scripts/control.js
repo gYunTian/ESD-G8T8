@@ -1,11 +1,12 @@
 
-async function run() {
+async function run(mode, action=0, amt=0) {
     const res = await fetch('http://localhost:5002/initialize', {mode: 'cors'})
     
     if (res.status !== 200) {
         console.log('error')
     }
     else {
+        
         const data = await res.json()
         let name = data['Name']
         let ticker = data['Ticker'].toUpperCase()
@@ -13,19 +14,23 @@ async function run() {
         let input = name.toUpperCase()+' ('+ticker+'): $'+current
         $('#company').attr({class:'col-md-12 center-block col-centered'}).text(input)   
         //$('#company').text("").attr({class:'col-md-7 center-block col-centered'}).append( "<p style='color: #fff;   '>"+input+"</p>" );
-            
         
-        //loading
-        $('#stock_price').text('').prepend("<p class='saving'>Computing Price <span>.</span><span>.</span><span>.</span></p><i class='fa fa-refresh fa-cog fa-spin'></i> " );
-        $('#vix').text('').prepend( "<p class='saving'>Retrieving Volatility Index <span>.</span><span>.</span><span>.</span></p><i class='fa fa-refresh fa-cog fa-spin'>" );
-        $('#general').text('').prepend( "<p class='saving'>Retrieving News & Computing Sentiment <span>.</span><span>.</span><span>.</span></p><i class='fa fa-refresh fa-cog fa-spin'></i>" );
-        $('#stock_sentiment').text('').prepend( "<p class='saving'>Retrieving Stock News & Computing Sentiment <span>.</span><span>.</span><span>.</span></p><i class='fa fa-refresh fa-cog fa-spin'></i>" );
-        $('#indicator').text('').prepend( "<p class='saving'>Plotting Chart <span>.</span><span>.</span><span>.</span></p><i class='fa fa-refresh fa-cog fa-spin'></i>" );
-        $('#indicator2').text('').prepend( "<p class='saving'>Retrieving Indicators <span>.</span><span>.</span><span>.</span></p><i class='fa fa-refresh fa-cog fa-spin'></i>" );
-        main()//.then(clear())
+        if (mode == "action") {
+            return {'name': name, 'ticker': ticker, 'current': current, 'action': action, 'amt': amt}
+        } else {
+            //loading
+            $('#stock_price').text('').prepend("<p class='saving'>Computing Price <span>.</span><span>.</span><span>.</span></p><i class='fa fa-refresh fa-cog fa-spin'></i> " );
+            $('#vix').text('').prepend( "<p class='saving'>Retrieving Volatility Index <span>.</span><span>.</span><span>.</span></p><i class='fa fa-refresh fa-cog fa-spin'>" );
+            $('#general').text('').prepend( "<p class='saving'>Retrieving News & Computing Sentiment <span>.</span><span>.</span><span>.</span></p><i class='fa fa-refresh fa-cog fa-spin'></i>" );
+            $('#stock_sentiment').text('').prepend( "<p class='saving'>Retrieving Stock News & Computing Sentiment <span>.</span><span>.</span><span>.</span></p><i class='fa fa-refresh fa-cog fa-spin'></i>" );
+            $('#indicator').text('').prepend( "<p class='saving'>Plotting Chart <span>.</span><span>.</span><span>.</span></p><i class='fa fa-refresh fa-cog fa-spin'></i>" );
+            $('#indicator2').text('').prepend( "<p class='saving'>Retrieving Indicators <span>.</span><span>.</span><span>.</span></p><i class='fa fa-refresh fa-cog fa-spin'></i>" );
+            main()//.then(clear())
+        }
     }           
 }   
 
+//main wrapper
 async function main() {
     // get2()
     // get4()
@@ -118,15 +123,15 @@ async function get6() {
 async function get7(ticker, name, amt, current, action) {
     value = 'aapl'
     const res = await fetch('http://localhost:5002/get7', {mode: 'cors', method: 'POST', body: JSON.stringify({'ticker': ticker, 'name': name, 'amt': amt, 'current': current, 'action': action})})
-
+    
+    console.log('we going')
     if (res.status !== 200) {
         console.log('error')
     }   
     else {
         const data = await res.json()
         let data1 = JSON.stringify(data)
-        console.log(data1)
-        //function ends
+        console.log(JSON.parse(data1)['ticker'])
     }
 }
 
@@ -223,34 +228,48 @@ async function get7(ticker, name, amt, current, action) {
 
 //document loaded
 $(document).ready(() => {
-    run() // initialize page
+    //initialize page
+    run('update') 
     $('[data-toggle="tooltip"]').tooltip()
-    console.log('asd')
+    console.log('initialized')
 
+    //custom functions
     $(".action").click(function() {
         var amt = $('#amt_box').val()
+
+        //input check
         if (amt == "") {
             $('#amt_box').attr("placeholder", "Invalid Input!").addClass('color')
             return
         }
-        var ticker = 'aapl'
-        var name = 'apple'
         var action = $(this).attr('id');
-        var current = 21
-        $('#amt_box').attr('disabled',true);
-        if (action == 'buy') {
-            $(this).attr('disabled',true).text('').prepend( "<i class='fa fa-refresh fa-spin'></i> Processing.." );
-            $('#sell').attr('disabled',true);
-        }
-        else {
-            $(this).attr('disabled',true).text('').prepend( "<i class='fa fa-refresh fa-spin'></i> Processing.." ); 
-            $('#buy').attr('disabled',true);   
-        }
-        // request
-        console.log('we heres')
-        get7(ticker, name, amt, current, action)
-        //get7()
 
-    });
+        //get parameters
+        run('action', action, amt)
+        .then( (data) => {
+            ticker = data['ticker']
+            name = data['name']
+            current = data['current']
+            action = data['action']
+            amt = data['amt']
+
+            $('#amt_box').attr('disabled',true);
+            if (action == 'buy') {
+                $(this).attr('disabled',true).text('').prepend( "<i class='fa fa-refresh fa-spin'></i> Processing.." );
+                $('#sell').attr('disabled',true);
+            }
+            else {
+                $(this).attr('disabled',true).text('').prepend( "<i class='fa fa-refresh fa-spin'></i> Processing.." ); 
+                $('#buy').attr('disabled',true);   
+            }
+
+            
+            // request
+            console.log('we here')
+            console.log('Data:'+ ticker, name, current, action, amt)
+            get7(ticker, name, amt, current, action)
+        })
+    })
+
 })
 

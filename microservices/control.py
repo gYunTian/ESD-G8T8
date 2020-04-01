@@ -65,7 +65,7 @@ def checker(input):
 def run():
     if (data.Name and data.Ticker):
         return json.dumps({'Name': data.Name.capitalize(), 'Ticker': data.Ticker, 'Current': data.Current}), 200
-    else:
+    else:       
         return json.dumps("No data"), 400
 
 #step 3
@@ -149,7 +149,7 @@ def get7():
     ticker = data['ticker']
 
 
-
+    
     # url = os.environ.get('CLOUDAMQP_URL', 'amqp://fxpccdrd:NJiudHhok5U_IISeM9pRqumppBFsk5Q1@wildboar.rmq.cloudamqp.com/fxpccdrd')
     # params = pika.URLParameters(url)
 
@@ -165,8 +165,8 @@ def get7():
     # print(" [x] Sent 'Hello World!!!!!'")
     # connection.close()
 
-    
     return request.data, 200
+    #return request.data, 200
     
 #step 9
 # @app.route("/process/<asd>")
