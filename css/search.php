@@ -106,6 +106,7 @@
             </div>
             
             </div>
+            <p id='transaction' style='color: #1ab394; font-size:130%'></p>
             <p style="font-size:130%;" id='change'><div class="col-md-12 center-block col-centered" style="padding: 5px" id="txt"></div></p>
           </div>
         </div></div>

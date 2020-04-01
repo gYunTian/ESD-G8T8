@@ -123,15 +123,17 @@ async function get6() {
 async function get7(ticker, name, amt, current, action) {
     value = 'aapl'
     const res = await fetch('http://localhost:5002/get7', {mode: 'cors', method: 'POST', body: JSON.stringify({'ticker': ticker, 'name': name, 'amt': amt, 'current': current, 'action': action})})
-    
+
     console.log('we going')
     if (res.status !== 200) {
-        console.log('error')
+        console.log('get7 error')
+        return 'error'
     }   
     else {
         const data = await res.json()
         let data1 = JSON.stringify(data)
         console.log(JSON.parse(data1)['ticker'])
+        return 'sent'
     }
 }
 
@@ -267,7 +269,30 @@ $(document).ready(() => {
             // request
             console.log('we here')
             console.log('Data:'+ ticker, name, current, action, amt)
+
             get7(ticker, name, amt, current, action)
+            .then( (data) => {
+                $('#amt_box').attr('disabled',false).val('')
+                if (action == 'buy') {
+                    $(this).attr('disabled',false).text('Buy').prepend( "" );
+                    $('#sell').attr('disabled',false);
+                }
+                else {
+                    $(this).attr('disabled',false).text('Sell').prepend( "" ); 
+                    $('#buy').attr('disabled',false);   
+                }
+                
+                if (data == 'sent') {
+                    //UI 
+                    console.log('transaction  done')
+                    $('#transaction').text('Transaction of '+action+' '+amt+' '+ticker+' stocks sent!').delay(5000).fadeOut('slow');   
+                } else {
+                    console.log('error')
+                    $('#transaction').text('Transaction failed! Service might be down!').delay(5000).fadeOut('slow');   
+                }
+            })
+            
+
         })
     })
 

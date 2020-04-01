@@ -9,6 +9,8 @@ CORS(app)
 
 headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
+#potenial issue, may not work with multiple calls
+
 class DataStore():
     Name =  None
     Current = None
@@ -148,23 +150,21 @@ def get7():
     data = json.loads(request.data)
     ticker = data['ticker']
 
+    url = os.environ.get('CLOUDAMQP_URL', 'amqp://fxpccdrd:NJiudHhok5U_IISeM9pRqumppBFsk5Q1@wildboar.rmq.cloudamqp.com/fxpccdrd')
+    params = pika.URLParameters(url)
 
+
+    connection = pika.BlockingConnection(params) # Connect to CloudAMQP
+    channel = connection.channel() # start a channel
+    channel.queue_declare(queue='transactionHandler', durable=True) # Declare a queue
+
+    channel.queue_declare(queue='hello')
+
+    channel.basic_publish(exchange='', routing_key='hello', body=str(request.data))
+    print(" [x] Sent transaction")
+
+    connection.close()
     
-    # url = os.environ.get('CLOUDAMQP_URL', 'amqp://fxpccdrd:NJiudHhok5U_IISeM9pRqumppBFsk5Q1@wildboar.rmq.cloudamqp.com/fxpccdrd')
-    # params = pika.URLParameters(url)
-
-
-    # connection = pika.BlockingConnection(params) # Connect to CloudAMQP
-    # channel = connection.channel() # start a channel
-    # channel.queue_declare(queue='hello') # Declare a queue
-    # #channel.queue_declare(queue='transaction', durable=True) # Declare a queue
-
-    # channel.basic_publish(exchange='',
-    #                     routing_key='hello',
-    #                     body=ticker)
-    # print(" [x] Sent 'Hello World!!!!!'")
-    # connection.close()
-
     return request.data, 200
     #return request.data, 200
     
