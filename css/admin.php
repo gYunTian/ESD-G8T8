@@ -127,8 +127,10 @@
         <td>MMM</td>
         <td>1</td>
         <td>$123.23</td>
-        <td><button class="button button1">Clear</button>
-        <button class="button button2">Reject</button></td>
+        <td>
+        <button class="button button1">Clear</button> 
+        <button class="button button2">Reject</button>
+        </td>
       </tr>
 
     </tbody>
