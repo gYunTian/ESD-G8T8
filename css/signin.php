@@ -82,9 +82,14 @@
                   $message = "<p style = 'color:red;text-align:center'>Invalid Username or Password.</p>";
                 } else {
                   $_SESSION['username'] = $_POST["username"];
-                  header("Location:account.php");
-                  ob_end_flush();
-                  $message = "Successfully authenticated.";
+
+                  if($_POST["username"] == 'admin') {
+                    header("Location:admin.php");
+                    ob_end_flush();
+                  } else {
+                    header("Location:account.php");
+                    ob_end_flush();
+                  }
                 }
               }
             ?>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 31, 2020 at 07:07 PM
+-- Generation Time: Apr 01, 2020 at 05:20 AM
 -- Server version: 5.7.19
 -- PHP Version: 7.1.9
 
@@ -62,7 +62,8 @@ INSERT INTO `users` (`username`, `password`) VALUES
 ('Charlie', 'c3'),
 ('Danny', 'd4'),
 ('Emily', 'e5'),
-('Frank', 'f6');
+('Frank', 'f6'),
+('admin', 'admin');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
