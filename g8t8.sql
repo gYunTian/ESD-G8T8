@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 01, 2020 at 05:20 AM
+-- Generation Time: Apr 01, 2020 at 06:59 PM
 -- Server version: 5.7.19
 -- PHP Version: 7.1.9
 
@@ -25,6 +25,21 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `adminstrator`
+--
+
+DROP TABLE IF EXISTS `adminstrator`;
+CREATE TABLE IF NOT EXISTS `adminstrator` (
+  `username` varchar(40) NOT NULL,
+  `stock_id` varchar(10) NOT NULL,
+  `quantity` int(5) DEFAULT NULL,
+  `price` float DEFAULT NULL,
+  PRIMARY KEY (`username`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `stocks`
 --
 
@@ -32,7 +47,7 @@ DROP TABLE IF EXISTS `stocks`;
 CREATE TABLE IF NOT EXISTS `stocks` (
   `username` varchar(40) NOT NULL,
   `stock_id` varchar(10) NOT NULL,
-  `quantity` int(2) NOT NULL,
+  `quantity` int(5) NOT NULL,
   `price` float NOT NULL,
   `current_price` float NOT NULL,
   `status` varchar(10) NOT NULL,
