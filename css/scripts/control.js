@@ -27,11 +27,11 @@ async function run() {
 }   
 
 async function main() {
-    get2()
-    get4()
-    get5()
-    get3()
-    get6()
+    // get2()
+    // get4()
+    // get5()
+    // get3()
+    // get6()
 }
 
 async function get2() {
@@ -223,9 +223,9 @@ async function get7(ticker, name, amt, current, action) {
 
 //document loaded
 $(document).ready(() => {
-    // run()
+    run() // initialize page
     $('[data-toggle="tooltip"]').tooltip()
-
+    console.log('asd')
 
     $(".action").click(function() {
         var amt = $('#amt_box').val()

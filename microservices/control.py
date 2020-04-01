@@ -55,7 +55,7 @@ def checker(input):
         data.Name = result
         data.Ticker = input
         data.Current = current
-
+    
         return {'Name': result, 'Ticker': input}, 200
     else:
         return "Not found",400
@@ -148,22 +148,24 @@ def get7():
     data = json.loads(request.data)
     ticker = data['ticker']
 
-    url = os.environ.get('CLOUDAMQP_URL', 'amqp://fxpccdrd:NJiudHhok5U_IISeM9pRqumppBFsk5Q1@wildboar.rmq.cloudamqp.com/fxpccdrd')
-    params = pika.URLParameters(url)
 
 
-    connection = pika.BlockingConnection(params) # Connect to CloudAMQP
-    channel = connection.channel() # start a channel
-    channel.queue_declare(queue='hello') # Declare a queue
-    #channel.queue_declare(queue='transaction', durable=True) # Declare a queue
-
-    channel.basic_publish(exchange='',
-                        routing_key='hello',
-                        body=ticker)
-    print(" [x] Sent 'Hello World!!!!!'")
-    connection.close()
+    # url = os.environ.get('CLOUDAMQP_URL', 'amqp://fxpccdrd:NJiudHhok5U_IISeM9pRqumppBFsk5Q1@wildboar.rmq.cloudamqp.com/fxpccdrd')
+    # params = pika.URLParameters(url)
 
 
+    # connection = pika.BlockingConnection(params) # Connect to CloudAMQP
+    # channel = connection.channel() # start a channel
+    # channel.queue_declare(queue='hello') # Declare a queue
+    # #channel.queue_declare(queue='transaction', durable=True) # Declare a queue
+
+    # channel.basic_publish(exchange='',
+    #                     routing_key='hello',
+    #                     body=ticker)
+    # print(" [x] Sent 'Hello World!!!!!'")
+    # connection.close()
+
+    
     return request.data, 200
     
 #step 9

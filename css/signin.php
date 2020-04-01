@@ -17,7 +17,7 @@
     <meta name="description" content="Sign In to access the best, most comprehensive stock data and analysis tools on the web. We aggregate all available stock information so you can spend less time looking for data and more time analyzing data.">
     <link href="https://www.discoverci.com/users/sign_in" rel="canonical">    <meta name="csrf-param" content="authenticity_token">
     <meta name="csrf-token" content="+KDrxmz7YD5SInSxknV8T8EBscDlK4FY0jkrzAWXu2zIVHMwMO5gwfnO+Xf1K8eNE2oQ24DfwlpCyKeAjEUTkg==">
-
+  
     <link rel="stylesheet" media="all" href="./signin_files/application-f856fa345de0ec2f4fe1dd4f4bf20d11398b4c689a39df184edb3529b69ca4b2.css">
     <script src="./signin_files/application-68273e5f3d04ef1145a286e7de748f4bc42a857705e7de5274c9a62680a53942.js.download"></script>
     <style type="text/css">/* Chart.js */

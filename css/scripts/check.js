@@ -10,7 +10,7 @@ async function checkTicker(value) {
     }   
     else {
         const data = await res.json()
-        window.location.replace("./search.html");
+        window.location.replace("./search.php");
         //function ends
     }
 }
