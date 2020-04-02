@@ -79,20 +79,19 @@ def run():
 #step 3
 @app.route('/get1')
 def get1():
-    #parallel 1
-    #Alex stock details
-    #detail = requests.get(url+ticker, headers=headers)
-    return 'OKAY', 200
+    price = requests.get('http://localhost:5800/dcf/'+data.Ticker, headers=headers).text
+    result = json.loads(price)
+    return {'price':result}, 200
 
 #step 4
 @app.route('/get2')
 def get2():
-    #parallel 2
+
     #stock sentiment - ticker_news.py
     stock = requests.get('http://localhost:5006/scrape/'+data.Name, headers=headers)
     result = json.loads(stock.text)
     
-
+    
     #sentiment service
     sentiment = requests.post('http://localhost:5004/sentiment', json=result, headers=headers).text
     sentiment = str(round(float(sentiment),2))+"%"
@@ -102,7 +101,7 @@ def get2():
 #step 5
 @app.route('/get3')
 def get3():
-    #parallel 3
+
     #indicators - indicators.py
     indicators = requests.get('http://localhost:5008/indicator/'+data.Ticker, headers=headers).text
     if ('exceeded' in indicators):
@@ -116,7 +115,7 @@ def get3():
 #step 6
 @app.route('/get4')
 def get4():
-    #parallel 4
+
     #general news sentiment
     general = requests.get('http://localhost:5010/scrape', headers=headers)
     result = json.loads(general.text)
@@ -129,7 +128,7 @@ def get4():
 #step 7
 @app.route('/get5')
 def get5():
-    #parallel 5
+
     #VIX 
     vix = requests.get('http://localhost:5007/vix', headers=headers)
     result = json.loads(vix.text)
@@ -194,8 +193,56 @@ def get7():
 
 @app.route('/get8', methods=['POST'])
 def get8():
-        data = json.loads(request.data)
+    data = json.loads(request.data)
+    master = []
+    for item in data:
+        master.append("UPDATE stocks SET status = 'cleared' WHERE unique_id ='"+str(item)+"'")
+    #input = "UPDATE stocks set status = 'cleared' where unique in ",data
 
+    host="esmosticket.cdf4pnuq8quq.us-east-1.rds.amazonaws.com"
+    port=3306
+    dbname="stocks"
+    user="admin"
+    password="enterprise123!"
+
+    conn = pymysql.connect(host, user=user,port=port,
+                            passwd=password, db=dbname)
+
+    cur = conn.cursor()
+    for item in master:
+        cur.execute(str(item))
+    #cur.execute("UPDATE stocks set status = 'cleared' where unique in %r;" % (tuple(data),))
+    conn.commit()
+
+    return {'data': master}, 200
+
+@app.route('/get_all')
+def get_all():
+    
+    host="esmosticket.cdf4pnuq8quq.us-east-1.rds.amazonaws.com"
+    port=3306
+    dbname="stocks"
+    user="admin"
+    password="enterprise123!"
+
+    conn = pymysql.connect(host, user=user,port=port,
+                            passwd=password, db=dbname)
+
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM stocks where status ='cleared'")
+    #cur.execute("SELECT * FROM stocks where status ='cleared' AND username = ''")
+
+    data = []
+    for row in cur:
+        # res[n] = {
+        #     'unique': row['unique_id']
+        # } 
+        # n += 1
+        data.append(row)
+        
+    conn.commit()
+
+    return json.dumps(data), 200
 
 #step 9
 # @app.route("/process/<asd>")

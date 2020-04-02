@@ -57,7 +57,7 @@ def retrieve():
     n = 1
     for key, value in count.data.items():
         value = json.loads(value)
-        element += '<tr>\
+        element += '<tr class="remove">\
         <td><span id="'+str(value['unique'])+'" class="pick">'+str(n)+'</span</td>\
         <td>Username</td>\
         <td>'+str(value['ticker'])+'</td>\

@@ -13,6 +13,12 @@ $(document).ready( () => {
         $('#clear_hide').hide()
         $(this).attr('disabled',true).prepend( "<span id='clear_show'>Clearing... <i class='fa fa-refresh fa-spin'></i></span>" );
         transaction()
+
+        $(this).attr('disabled',false)
+        $('#clear_show').hide()
+        $('#clear_hide').show()
+        $(".remove").remove();
+        $('#empty').show().text('All transactions cleared')
     })
 })
 
@@ -28,7 +34,7 @@ async function retrieve() {
     }
     else {
         const data = await res.json()
-
+        
         if (data['status'] == 'No message in queue') {
             $('#empty').show().text('No transactions found')
         }
@@ -49,6 +55,21 @@ async function transaction() {
     for (var i=0; i < spans.length; ++i){
         ids.push(spans[i].id)
     }
-    console.log(ids)
-    
+
+    const res = await fetch('http://localhost:5002/get8', {mode: 'cors', method: 'POST', body:
+    JSON.stringify(ids)})
+
+    console.log('Posting for db clearing')
+
+    if (res.status !== 200) {
+        console.log('get8 error')
+        return 'error'
+    }   
+    else {
+        console.log('Cleared')
+        // const data = await res.json()
+        // let data1 = JSON.stringify(data)
+        // console.log(JSON.parse(data1)['master'])
+        return 'sent'
+    }
 }

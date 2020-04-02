@@ -32,11 +32,25 @@ async function run(mode, action=0, amt=0) {
 
 //main wrapper
 async function main() {
-    // get2()
-    // get4()
-    // get5()
-    // get3()
-    // get6()
+    get1()
+    get2()
+    get4()
+    get5()
+    get3()
+    get6()
+}
+
+async function get1() {
+    const res = await fetch('http://localhost:5002/get1', {mode: 'cors'})
+    if (res.status !== 200) {
+        console.log('error')
+    }
+    else {
+        const data = await res.json()
+        // console.log(data)
+        $('#stock_price').text('Computed DCF Price:').prepend( "" );
+        $('#stock_price').append( "<b><p style='color: '> $"+data['price']+"</p></b>" );
+    }    
 }
 
 async function get2() {

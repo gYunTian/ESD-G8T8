@@ -1,7 +1,13 @@
+from flask import Flask
+from flask_cors import CORS
 import argparse
 from decimal import Decimal
 from urllib.request import urlopen
 import json
+
+app = Flask(__name__)
+CORS(app)
+
 
 def DCF(ticker, ev_statement, income_statement, balance_statement, cashflow_statement, discount_rate, forecast, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate):
    
@@ -21,13 +27,13 @@ def DCF(ticker, ev_statement, income_statement, balance_statement, cashflow_stat
               '\nEquity Value for {}: ${}.'.format(ticker, '%.2E' % Decimal(str(equity_val))),
            '\nPer share value for {}: ${}.\n'.format(ticker, '%.2E' % Decimal(str(share_price))),
             '-'*60)
-
-    return {
+    data = {
         'date': income_statement[0]['date'],       
         'enterprise_value': enterprise_val,
         'equity_value': equity_val,
         'share_price': float(share_price)
     }
+    return data
 
 def historical_DCF(ticker, years, forecast, discount_rate, earnings_growth_rate, cap_ex_growth_rate, perpetual_growth_rate, interval = 'annual'):
 
@@ -57,8 +63,8 @@ def historical_DCF(ticker, years, forecast, discount_rate, earnings_growth_rate,
                     perpetual_growth_rate)
         except IndexError:
             print('Interval {} unavailable, no historical statement.'.format(interval))
-        dcfs[dcf['date']] = dcf 
-    
+        dcfs[1] = dcf 
+
     return dcfs
 
 def ulFCF(ebit, tax_rate, non_cash_charges, cwc, cap_ex):
@@ -87,9 +93,9 @@ def enterprise_value(income_statement, cashflow_statement, balance_statement, pe
     discount = discount_rate
 
     flows = []
-
-    print('Forecasted information for {} years out, starting at {}.'.format(period, income_statement[0]['date']),
-         ('\n         DFCF   |    EBIT   | '))
+    
+    # print('Forecasted information for {} years out, starting at {}.'.format(period, income_statement[0]['date']),
+    #      ('\n         DFCF   |    EBIT   | '))
     for yr in range(1, period+1):    
 
         
@@ -103,9 +109,9 @@ def enterprise_value(income_statement, cashflow_statement, balance_statement, pe
         PV_flow = flow/((1 + discount)**yr)
         flows.append(PV_flow)
 
-        print(str(int(income_statement[0]['date'][0:4]) + yr) + '  ',
-              '%.2E' % Decimal(PV_flow) + ' | ',
-              '%.2E' % Decimal(ebit) + ' | ')
+        # print(str(int(income_statement[0]['date'][0:4]) + yr) + '  ',
+        #       '%.2E' % Decimal(PV_flow) + ' | ',
+        #       '%.2E' % Decimal(ebit) + ' | ')
     NPV_FCF = sum(flows)
     final_cashflow = flows[-1] * (1 + perpetual_growth_rate)
     TV = final_cashflow/(discount - perpetual_growth_rate)
@@ -195,3 +201,65 @@ def get_historical_share_prices(ticker, dates):
                 print(date + ' ', get_jsonparsed_data(url))
 
     return prices
+
+
+def main(args):
+    if args.s > 0:
+        if args.v is not None:
+            if args.v == 'eg' or 'earnings_growth_rate':
+                cond, dcfs = run_setup(args, variable = 'eg')
+            elif args.v == 'cg' or 'cap_ex_growth_rate':
+                cond, dcfs = run_setup(args, variable = 'cg')
+            elif args.v == 'pg' or 'perpetual_growth_rate':
+                cond, dcfs = run_setup(args, variable = 'pg')
+            elif args.v == 'discount_rate' or 'discount':
+                cond, dcfs = run_setup(args, variable = 'discount')
+            
+            else:
+                raise ValueError('args.variable is invalid')
+        else:
+           
+            raise ValueError('Invalid')
+    else:
+        cond, dcfs = {'Ticker': [args.t]}, {}
+        dcfs[args.t] = historical_DCF(args.t, args.y, args.p, args.d, args.eg, args.cg, args.pg, args.i)
+    return dcfs
+    
+def run_setup(args, variable):
+    dcfs, cond = {}, {args.v: []}
+    
+    for increment in range(1, int(args.steps) + 1):
+        var = vars(args)[variable] * (1 + (args.s * increment))
+        step = '{}: {}'.format(args.v, str(var)[0:4])
+
+        cond[args.v].append(step)
+        vars(args)[variable] = var
+        dcfs[step] = historical_DCF(args.t, args.y, args.p, args.d, args.eg, args.cg, args.pg, args.i)
+
+    return cond, dcfs
+
+
+@app.route('/dcf/<input>')
+def dcf(input):
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('--p', '--period', help = 'years to forecast', type = int, default =1)
+    parser.add_argument('--t', '--ticker', help = 'pass a single ticker to do historical DCF', type = str, default = input)
+    parser.add_argument('--y', '--years', help = 'number of years to compute DCF analysis for', type = int, default = 1)
+    parser.add_argument('--i', '--interval', help = 'interval period for each calc, either "annual" or "quarter"', default = 'annual')
+    parser.add_argument('--s', '--step_increase', help = 'specify step increase for EG, CG, PG to enable compari lcsons.', type = float, default = 0)
+    parser.add_argument('--steps', help = 'steps to take if --s is > 0', default = 5)
+    parser.add_argument('--v', '--variable', help = 'if --step_increase is specified, must specifiy variable to increase from: [earnings_growth_rate, discount_rate]', default = None)
+    parser.add_argument('--d', '--discount_rate', help = 'discount rate for future cash flow to firm', default = 0.025)
+    parser.add_argument('--eg', '--earnings_growth_rate', help = 'growth in revenue, YoY',  type = float, default = 0.01)
+    parser.add_argument('--cg', '--cap_ex_growth_rate', help = 'growth in cap_ex, YoY', type = float, default = 0.01)
+    parser.add_argument('--pg', '--perpetual_growth_rate', help = 'for perpetuity growth terminal value', type = float, default = 0.01)
+    
+    args = parser.parse_args()
+    data = main(args)
+    return json.dumps(round(data[input][1]['share_price'],3)), 200
+
+if __name__ == "__main__":
+    app.run(host='localhost', port=5800, debug=True)
+
+

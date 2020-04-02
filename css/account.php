@@ -71,7 +71,7 @@
             s = checkTime(s);
             document.getElementById('txt').innerHTML =
             dd + "/" + mm + "/" + yyyy + "  " + h + ":" + m + ":" + s;
-            var t = setTimeout(startTime, 500);
+            //var t = setTimeout(startTime, 500);
           }
           function checkTime(i) {
             if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
@@ -82,7 +82,7 @@
 </head>
 <body onload="startDate()">
 
-<div class="container-fluid bg-1 text-center">
+<div class="container-fluid bg-1 text-center" style="padding: 0px !important;">
   <a href="./home.php"><img height="150" width="150" alt="G8T8 Logo" class="img-responsive logo-img" src="./resources/g8t8.png"></a>
   <div id="report-search">
   <div class="col-md-4"></div>
@@ -103,16 +103,21 @@
 
 
 <!-- First Container -->
-<div class="container-fluid bg-1 text-center">
-  <h1 class="margin">Hello, <?php echo ucfirst($_SESSION['username']); ?></h1>
+<div class="container-fluid bg-1 text-center" style="padding: 0px !important;">
+  <h1 class="margin">Hello, <?php 
+    if (isset($_SESSION['username'])) { 
+      echo ucfirst($_SESSION['username']);
+    } 
+    else {
+      echo '<a href="./signin.php">Not Logged in</a>';
+    }
+    ?></h1>
   <div class="col-md-12 center-block col-centered" style="padding: 5px;font-size: 80%" id="txt"></div>
 </div>
 
-<div class="container-fluid bg-3 text-center">
+<div class="container-fluid bg-3 text-center" style="padding: 10px !important;">
 <div class="container">
-  <h2><?php echo ucfirst($_SESSION['username']); ?>'s Stock</h2>
-  <br>
-  <br>            
+  <h2> Transaction Stocks </h2> </br>  
   <table class="table table-striped">
     <thead>
       <tr>
@@ -124,7 +129,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
+      <!-- <tr>
         <td>Bought</td>
         <td>MMM</td>
         <td>1</td>
@@ -144,7 +149,7 @@
         <td>1</td>
         <td>$132.34</td>
         <td>$123.34</td>
-      </tr>
+      </tr> -->
     </tbody>
   </table>
 </div>
@@ -160,7 +165,7 @@
 </body> 
 
 <script type="text/javascript" src="./scripts/check.js"></script>
-
+<script type="text/javascript" src="./scripts/account.js"></script>
 </html>
 
 
