@@ -22,20 +22,6 @@ SET time_zone = "+00:00";
 -- Database: `g8t8`
 --
 
--- --------------------------------------------------------
-
---
--- Table structure for table `adminstrator`
---
-
-DROP TABLE IF EXISTS `adminstrator`;
-CREATE TABLE IF NOT EXISTS `adminstrator` (
-  `username` varchar(40) NOT NULL,
-  `stock_id` varchar(10) NOT NULL,
-  `quantity` int(5) DEFAULT NULL,
-  `price` float DEFAULT NULL,
-  PRIMARY KEY (`username`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -49,7 +35,6 @@ CREATE TABLE IF NOT EXISTS `stocks` (
   `stock_id` varchar(10) NOT NULL,
   `quantity` int(5) NOT NULL,
   `price` float NOT NULL,
-  `current_price` float NOT NULL,
   `status` varchar(10) NOT NULL,
   PRIMARY KEY (`username`,`stock_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;

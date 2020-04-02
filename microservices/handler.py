@@ -54,20 +54,21 @@ def retrieve():
     channel.start_consuming()
     
     print(count.data)
+    n = 1
     for key, value in count.data.items():
         value = json.loads(value)
         element += '<tr>\
-        <td><input type="checkbox" id="'+str(value['unique'])+'" class="larger"></td>\
+        <td><span id="'+str(value['unique'])+'" class="pick">'+str(n)+'</span</td>\
         <td>Username</td>\
         <td>'+str(value['ticker'])+'</td>\
         <td>'+str(value['amt'])+'</td>\
         <td>'+str(value['current'])+'</td>\
         <td>'+str(value['action'])+'</td>\
         </tr>'
-    
+        n += 1
     #return in json format
     return {'status' : 'retrieved', 'data': element}, 200
-    
 
+    
 if __name__ == "__main__":
     app.run(host='localhost', port=5500, debug=True)

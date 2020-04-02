@@ -124,15 +124,16 @@ async function get7(ticker, name, amt, current, action) {
     var unique = $('#txt').html()
     const res = await fetch('http://localhost:5002/get7', {mode: 'cors', method: 'POST', body: JSON.stringify({'unique': unique+'-'+ticker+'-'+action+'-'+amt,'ticker': ticker, 'name': name, 'amt': amt, 'current': current, 'action': action})})
     
-    console.log('Posting to amqp service')
+    console.log('Posting to amqp service & database!')
     if (res.status !== 200) {
         console.log('get7 error')
         return 'error'
     }   
     else {
+        console.log('here 1')
         const data = await res.json()
         let data1 = JSON.stringify(data)
-        console.log(JSON.parse(data1)['ticker'])
+        console.log(JSON.parse(data1)['data'], JSON.parse(data1)['data2'], JSON.parse(data1)['data3'])
         return 'sent'
     }
 }

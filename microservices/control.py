@@ -3,6 +3,7 @@ import pika, os, logging
 import json
 import requests
 from flask_cors import CORS, cross_origin
+import pymysql
 
 app = Flask(__name__)
 CORS(app)
@@ -168,10 +169,34 @@ def get7():
     print(" [x] Sent transaction")
 
     connection.close()
-    
-    return request.data, 200
-    #return request.data, 200
-    
+
+    #db here
+    data = json.loads(request.data)['ticker']
+    data1 = json.loads(request.data)['unique']
+    data2 = json.loads(request.data)['amt']
+    data3 = json.loads(request.data)['current']
+
+    host="esmosticket.cdf4pnuq8quq.us-east-1.rds.amazonaws.com"
+    port=3306
+    dbname="stocks"
+    user="admin"
+    password="enterprise123!"
+
+    conn = pymysql.connect(host, user=user,port=port,
+                            passwd=password, db=dbname)
+
+    cur = conn.cursor()
+    cur.execute("INSERT INTO stocks VALUES('test_user', '"+str(data)+"', '"+str(data2)+"', '"+str(data3)+"', 'pending', '"+str(data1)+"')")
+    conn.commit()
+
+    return {'data': data1, 'data2': data2, 'data3':data3}, 200
+
+
+@app.route('/get8', methods=['POST'])
+def get8():
+        data = json.loads(request.data)
+
+
 #step 9
 # @app.route("/process/<asd>")
 # def process(asd):

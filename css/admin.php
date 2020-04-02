@@ -86,16 +86,18 @@
             s = checkTime(s);
             document.getElementById('txt').innerHTML =
             dd + "/" + mm + "/" + yyyy + "  " + h + ":" + m + ":" + s;
-            //var t = setTimeout(startTime, 500);
+            var t = setTimeout(startTime, 500);
           }
           function checkTime(i) {
             if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
             return i;
           }
+          
+          setInterval(startDate, 1000);
     </script>
 
 </head>
-<body onload="startDate()">
+<body onload="setInterval(startDate, 1000)">
 <!-- First Container -->
 <div class="container-fluid bg-1 text-center" style="padding: 10px !important;">
   <h1 class="margin">Admin Panel</h1>
@@ -132,8 +134,8 @@
   </table>
   <p id='empty'>Empty</p>
   <div style='margin-top: 3em;'>
-    <button style='padding: 15px 50px;' class="button button1"> Clear Selected</button> 
-    <button style='padding: 15px 50px;'  class="button button2">Reject Selected</button>
+    <button style='padding: 15px 50px;' class="button button1" id='clear_transactions'> <span id='clear_hide'>Clear All </span></button> 
+    <button style='padding: 15px 50px;'  class="button button2" id='reject_transactions'> <span id='reject_hide'>Reject All </span></button>
   </div>
 </div>
 </div>
