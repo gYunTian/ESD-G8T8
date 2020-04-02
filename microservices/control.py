@@ -33,10 +33,15 @@ def checker(input):
 
     querystring = {"symbol":input}
 
+    # headers = {
+    #     'x-rapidapi-host': "apidojo-yahoo-finance-v1.p.rapidapi.com",
+    #     'x-rapidapi-key': "8a24813abdmsha86997223a2736ep1f06ffjsn810d01909dc7"
+    # }   
+    
     headers = {
         'x-rapidapi-host': "apidojo-yahoo-finance-v1.p.rapidapi.com",
-        'x-rapidapi-key': "8a24813abdmsha86997223a2736ep1f06ffjsn810d01909dc7"
-    }   
+        'x-rapidapi-key': "f7d6d06a87mshcca350cbb19ddd3p1d57b4jsne91eb701cbb5"
+    }
 
     response = requests.request("GET", url, headers=headers, params=querystring).text   
     
@@ -54,11 +59,11 @@ def checker(input):
         
         current = json.loads(response)['price']['regularMarketOpen']['raw']
         
-        data.Name = result
+        data.Name = result.replace('+', " ")
         data.Ticker = input
         data.Current = current
-    
-        return {'Name': result, 'Ticker': input}, 200
+
+        return {'Name': result.replace('+', " "), 'Ticker': input}, 200
     else:
         return "Not found",400
 
@@ -148,7 +153,6 @@ def get6():
 def get7():
     #graph div
     data = json.loads(request.data)
-    ticker = data['ticker']
 
     url = os.environ.get('CLOUDAMQP_URL', 'amqp://fxpccdrd:NJiudHhok5U_IISeM9pRqumppBFsk5Q1@wildboar.rmq.cloudamqp.com/fxpccdrd')
     params = pika.URLParameters(url)
@@ -156,11 +160,11 @@ def get7():
 
     connection = pika.BlockingConnection(params) # Connect to CloudAMQP
     channel = connection.channel() # start a channel
-    channel.queue_declare(queue='transactionHandler', durable=True) # Declare a queue
+    #channel.queue_declare(queue='transactionHandler', durable=True) # Declare a queue
+    
+    channel.queue_declare(queue='esd', durable=True)
 
-    channel.queue_declare(queue='hello')
-
-    channel.basic_publish(exchange='', routing_key='hello', body=str(request.data))
+    channel.basic_publish(exchange='', routing_key='esd', body=request.data)
     print(" [x] Sent transaction")
 
     connection.close()

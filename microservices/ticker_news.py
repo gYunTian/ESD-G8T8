@@ -3,8 +3,7 @@ import json
 from bs4 import BeautifulSoup
 from flask import Flask, jsonify
 from flask_cors import CORS
-from datetime import datetime, timedelta
-import re
+
 
 #import requests
 app = Flask(__name__)

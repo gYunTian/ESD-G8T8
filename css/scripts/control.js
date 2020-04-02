@@ -238,14 +238,14 @@ $(document).ready(() => {
     //custom functions
     $(".action").click(function() {
         var amt = $('#amt_box').val()
-
+        
         //input check
-        if (amt == "") {
-            $('#amt_box').attr("placeholder", "Invalid Input!").addClass('color')
+        if (amt == "" || amt % 1 != 0) {
+            $('#amt_box').val('').attr("placeholder", "Invalid Input!").addClass('color')
             return
-        }
+        }       
         var action = $(this).attr('id');
-
+        
         //get parameters
         run('action', action, amt)
         .then( (data) => {
@@ -282,17 +282,27 @@ $(document).ready(() => {
                     $('#buy').attr('disabled',false);   
                 }
                 
+                if($('#transaction').css('display') == 'none') $('#transaction').css('opacity', '100');
+
                 if (data == 'sent') {
                     //UI 
-                    console.log('transaction  done')
-                    $('#transaction').text('Transaction of '+action+' '+amt+' '+ticker+' stocks sent!').delay(5000).fadeOut('slow');   
+                    console.log('transaction done')
+                    // $('#transaction').text('Transaction of '+action+' '+amt+' '+ticker+' stocks sent!').fadeOut(5000, 'slow')
+                    $('#transaction').text('Transaction of '+action+' '+amt+' '+ticker+' stocks sent!').stop(true).show()
+                    setTimeout(function(){
+                        $('#transaction').stop(true).fadeOut(3000);
+                    }, 3000);
+
                 } else {
                     console.log('error')
-                    $('#transaction').text('Transaction failed! Service might be down!').delay(5000).fadeOut('slow');   
+                    // $('#transaction').text('Transaction failed! The service might be down!').delay(5000).fadeOut('slow');   
+                    $('#transaction').text('Transaction failed! The service might be down!').stop(true).show()
+                    setTimeout(function(){
+                        $('#transaction').stop(true).fadeOut(3000);
+                    }, 3000);
                 }
             })
             
-
         })
     })
 

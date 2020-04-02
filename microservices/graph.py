@@ -33,6 +33,6 @@ def candlestick(ticker):
     res = str(plotly.offline.plot(data, include_plotlyjs=False, output_type='div'))
     return json.dumps(res), 200
 
-
+    
 if __name__ == "__main__":
     app.run(host='localhost', port=5020, debug=True)
