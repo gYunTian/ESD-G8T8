@@ -157,13 +157,13 @@ def get7():
     url = os.environ.get('CLOUDAMQP_URL', 'amqp://fxpccdrd:NJiudHhok5U_IISeM9pRqumppBFsk5Q1@wildboar.rmq.cloudamqp.com/fxpccdrd')
     params = pika.URLParameters(url)
 
-
+    
     connection = pika.BlockingConnection(params) # Connect to CloudAMQP
     channel = connection.channel() # start a channel
     #channel.queue_declare(queue='transactionHandler', durable=True) # Declare a queue
     
     channel.queue_declare(queue='esd', durable=True)
-
+    
     channel.basic_publish(exchange='', routing_key='esd', body=request.data)
     print(" [x] Sent transaction")
 

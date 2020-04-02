@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
     body {
         font: 20px Montserrat, sans-serif;
@@ -64,6 +65,11 @@
     .button2 {
     background-color: #FF0000; /* Red */
     border-radius: 2px;}
+    
+    input.larger { 
+        width: 1em; 
+        height: 1em; 
+    } 
 
     </style>
 
@@ -80,7 +86,7 @@
             s = checkTime(s);
             document.getElementById('txt').innerHTML =
             dd + "/" + mm + "/" + yyyy + "  " + h + ":" + m + ":" + s;
-            var t = setTimeout(startTime, 500);
+            //var t = setTimeout(startTime, 500);
           }
           function checkTime(i) {
             if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
@@ -91,21 +97,23 @@
 </head>
 <body onload="startDate()">
 <!-- First Container -->
-<div class="container-fluid bg-1 text-center">
-  <h1 class="margin">Admin</h1>
-  <div class="col-md-12 center-block col-centered" style="padding: 5px;font-size: 80%" id="txt"></div>
+<div class="container-fluid bg-1 text-center" style="padding: 10px !important;">
+  <h1 class="margin">Admin Panel</h1>
+  <div class="col-md-12 center-block col-centered" style="padding: 0px;font-size: 80%" id="txt"></div>
 </div>
 
-<div class="container-fluid bg-3 text-center">
+<div class="container-fluid bg-3 text-center" style="padding-top: 0px;">
 <div class="container">
-  <h2>Admin Page</h2>
   <br>
   <br>            
-  <table class="table table-striped">
+  <div>
+    <b><p style='display: inline-block !important;'>PENDING TRANSACTIONS</p></b>
+    <button style="font-size:24px; display: inline-block !important; margin-left: 1em;" id='retrieve'> <span id='hide'>Retrieve <i class="fa fa-refresh"></span></i></button>
+  </div>
+  <table class="table table-striped" id='add'>
     <thead>
       <tr>
-        <th style="text-align:center"></th>
-        <th style="text-align:center"></th>
+        <th style="text-align:right"></th>
         <th style="text-align:center"></th>
         <th style="text-align:center"></th>
         <th style="text-align:center"></th>
@@ -118,23 +126,15 @@
         <td>Stock Ticker</td>
         <td>Quantity</td>
         <td>Price</td>
-        <td>Clear/Reject</td>
+        <td>Action</td>
       </tr>
-
-      <tr>
-        <td><input type="checkbox" id="vehicle3" name="vehicle3" value="Boat"></td>
-        <td>Charlie</td>
-        <td>MMM</td>
-        <td>1</td>
-        <td>$123.23</td>
-        <td>
-        <button class="button button1">Clear</button> 
-        <button class="button button2">Reject</button>
-        </td>
-      </tr>
-
     </tbody>
   </table>
+  <p id='empty'>Empty</p>
+  <div style='margin-top: 3em;'>
+    <button style='padding: 15px 50px;' class="button button1"> Clear Selected</button> 
+    <button style='padding: 15px 50px;'  class="button button2">Reject Selected</button>
+  </div>
 </div>
 </div>
 
@@ -145,5 +145,6 @@
   <p>© 2020 G8T8</p> 
 </footer>
 
+<script type="text/javascript" src="./scripts/retrieve.js"></script>
 </body>    
 </html>

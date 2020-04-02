@@ -121,10 +121,10 @@ async function get6() {
 
 
 async function get7(ticker, name, amt, current, action) {
-    value = 'aapl'
-    const res = await fetch('http://localhost:5002/get7', {mode: 'cors', method: 'POST', body: JSON.stringify({'ticker': ticker, 'name': name, 'amt': amt, 'current': current, 'action': action})})
-
-    console.log('we going')
+    var unique = $('#txt').html()
+    const res = await fetch('http://localhost:5002/get7', {mode: 'cors', method: 'POST', body: JSON.stringify({'unique': unique+'-'+ticker+'-'+action+'-'+amt,'ticker': ticker, 'name': name, 'amt': amt, 'current': current, 'action': action})})
+    
+    console.log('Posting to amqp service')
     if (res.status !== 200) {
         console.log('get7 error')
         return 'error'
@@ -136,95 +136,6 @@ async function get7(ticker, name, amt, current, action) {
         return 'sent'
     }
 }
-
-//works
-
-// async function get7() {
-//     value = 'aapl'
-//     const res = await fetch('http://localhost:5002/get7/'+value, {mode: 'cors'})
-    
-//     if (res.status !== 200) {
-//         console.log('error')
-//     }   
-//     else {
-//         const data = await res.json()
-//         console.log(data)
-//         //function ends
-//     }
-// }
-
-// async function get7(ticker, name, amt, current, action) {
-//     let data = ticker+'-'+name+'-'+amt+'-'+current+'-'+action
-//     const res = await fetch('http://localhost:5002/process/'+data, {mode: 'cors'})
-//     if (res.status !== 200) {
-//         console.log('error')
-//     }
-//     else {
-//         const data = await res.json()
-//         console.log(data)
-//     }       
-//     // const result = await fetch('http://localhost:5100/process', 
-//     //     method: "POST",
-//     //     body: JSON.stringify({
-//     //         a: 1, b: 2
-//     //     }),
-//     //     mode: 'no-cors'
-//     // )
-
-//     // var request = new Request('http://localhost:5002/process', {
-//     //     method: 'GET', 
-//     //     mode: 'cors', 
-//     // })
-
-//     // const result = await fetch(request)
-//     // const data = result.json()
-//     // console.log(data)
-
-// }
-
-// async function get7() {
-//     //const res = await fetch('http://localhost:5002/process', {mode: 'cors',  method: "POST", json: JSON.stringify({'asd':'qwe'})})
-//     // const res = await fetch( 'http://localhost:5002/process', {
-//     //     headers: {
-//     //       'Accept': 'application/json',
-//     //       'Content-Type': 'application/json'
-//     //     }, 
-//     //     method: 'POST',
-//     //     body: {
-//     //       'user1':'1234'
-//     //     }
-//     // });
-
-//     // if (res.status !== 200) {
-//     //     console.log('error')
-//     // }
-//     // else {
-//     //     const data = await res.json()
-//     //     console.log(data)
-//     // }       
-//     fetch("http://localhost:5002/process", {
-//         method: "post",
-//         mode: 'cors',
-//         headers: {
-//           'Accept': 'application/json',
-//           'Content-Type': 'application/json'
-//         },
-        
-//         //make sure to serialize your JSON body
-//         body: JSON.stringify({
-//           'name': 'myName',
-//           'password': 'myPassword'
-//         })
-//       })
-//       .then( (response) => { 
-//          //do something awesome that makes the world a better place
-//          const data = response.json()
-//          console.log(data)
-//       });
-
-
-// }
-
 
 
 
@@ -242,6 +153,9 @@ $(document).ready(() => {
         //input check
         if (amt == "" || amt % 1 != 0) {
             $('#amt_box').val('').attr("placeholder", "Invalid Input!").addClass('color')
+            setTimeout( () => {   
+                $('#amt_box').val('').attr("placeholder", "Quantity").removeClass("color")
+            }, 2000);   
             return
         }       
         var action = $(this).attr('id');
@@ -282,24 +196,26 @@ $(document).ready(() => {
                     $('#buy').attr('disabled',false);   
                 }
                 
-                if($('#transaction').css('display') == 'none') $('#transaction').css('opacity', '100');
+                if ($('#transaction').css('display') == 'none') {
+                    $('#transaction').css('opacity', '100')
+                }
 
                 if (data == 'sent') {
                     //UI 
                     console.log('transaction done')
-                    // $('#transaction').text('Transaction of '+action+' '+amt+' '+ticker+' stocks sent!').fadeOut(5000, 'slow')
-                    $('#transaction').text('Transaction of '+action+' '+amt+' '+ticker+' stocks sent!').stop(true).show()
-                    setTimeout(function(){
-                        $('#transaction').stop(true).fadeOut(3000);
-                    }, 3000);
+                    //$('#transaction').text('Transaction of '+action+' '+amt+' '+ticker+' stocks sent!').fadeOut(5000, 'slow')
+                    $('#transaction').text('Transaction of '+action+' '+amt+' '+ticker+' stocks sent!').show()
+                    setTimeout( () => {   
+                        $('#transaction').hide()
+                    }, 3000);        
 
                 } else {
                     console.log('error')
-                    // $('#transaction').text('Transaction failed! The service might be down!').delay(5000).fadeOut('slow');   
-                    $('#transaction').text('Transaction failed! The service might be down!').stop(true).show()
-                    setTimeout(function(){
-                        $('#transaction').stop(true).fadeOut(3000);
-                    }, 3000);
+                    //$('#transaction').text('Transaction failed! The service might be down!').delay(5000).fadeOut('slow');   
+                    $('#transaction').text('Transaction failed! The service might be down!').show()
+                    setTimeout( () => {   
+                        $('#transaction').hide()
+                    }, 3000);   
                 }
             })
             
