@@ -17,8 +17,13 @@
         line-height: 1.8;
         color: #f5f6f7;
     }
-    p {font-size: 20px;}
+
+    p {
+      font-size: 20px;
+    }
+
     .margin {margin-bottom: 45px;}
+
     .bg-1 { 
         background-color: #132235; /* Header */
         color: #ffffff;
@@ -80,23 +85,16 @@
 <div class="container-fluid bg-1 text-center">
   <a href="./home.php"><img height="150" width="150" alt="G8T8 Logo" class="img-responsive logo-img" src="./resources/g8t8.png"></a>
   <div id="report-search">
-  <div class="col-md-4" style="padding-right: 0px;"></div>
-    <div class="col-md-3" style="padding-right:0px;">
+  <div class="col-md-4"></div>
+    <div class="col-md-3" style="padding:0px; margin=0px">
       <div class="easy-autocomplete eac-description" style="width: 553px;">
-                          <input placeholder="Search Stock Ticker" id='search_input' class="form-control input-lg topnavbar-search input-shadow b-r-md" id="report-search" type="text" name="term" autocomplete="off">
-                          <div class="easy-autocomplete-container" id="eac-container-report-search"></div></div>
-                        </div>
-                        <div class="col-md-1" style="padding-left: 0px;">
-                          <button type="submit" id='search_ticker' class="btn btn-primary input-lg btn-primary-shadow subscribe-button">
-                            Search
-                          </button>
-                        </div>
-                    </div>
-                    <span id='error' style="font-size: large; display: none; margin-top: 5px; color: rgb(223, 62, 94);">Ticker not found!</span>
-                  <!-- </form> -->          
-                </div>
-              </div>
-
+        <input placeholder="Search Stock Ticker" id='search_input' class="form-control input-lg topnavbar-search input-shadow b-r-md" id="report-search" type="text" name="term" autocomplete="off">
+          <div class="easy-autocomplete-container" id="eac-container-report-search"></div>
+      </div>
+    </div>
+    <div class="col-md-1"><button type="submit" id='search_ticker' class="btn btn-primary input-lg btn-primary-shadow subscribe-button">Search</button></div>
+  </div>
+  <span id='error' style="font-size: large; display: none; margin-top: 5px; color: rgb(223, 62, 94);">Ticker not found!</span>
 </div>
 
 
