@@ -1,3 +1,15 @@
+<?php 
+    session_start();
+
+    if(!isset($_SESSION['username']))
+    {
+      $message = "Sign in to access your account.";
+    }
+    else {
+      $message = "You are logged in.";
+    }
+?>
+
 <!DOCTYPE html>
 <!-- saved from url=(0027)https://www.discoverci.com/ -->
 <html>
@@ -42,7 +54,17 @@
                   <!-- <li><a href="./companies.html">Companies</a></li> -->
                   <!-- <li><a href="">Blog</a></li> -->
                     <!-- <li><a href="signin.html">Sign In</a></li> -->
-                    <li> <a class="btn btn-outline-visualize nav-btn" href="signin.php">Sign In</a></li>
+                    <li>
+                    <?php 
+                    if(!isset($_SESSION['username']))
+                    {
+                      echo "<a class='btn btn-outline-visualize nav-btn' href='signin.php'>Sign In</a>";
+                    } else {
+                      echo "<a class='btn btn-outline-visualize nav-btn' href='home.php'>Logout</a>";
+                      session_destroy();
+                    }
+                    ?>
+                    </li>
                 </ul>
               </div>
               <!-- header right ends-->
@@ -59,6 +81,7 @@
         <section>
           <div class="container">
             <div class="row">
+            <?php echo $message; ?>
               <div class="col-md-10 center-block col-centered">
                 <h1 class="landing-header">
                   Tools to find undervalued stocks, monitor your investments and grow your portfolio
@@ -73,7 +96,8 @@
                     <div id="report-search">
                       <div class="col-sm-8 col-md-9" style="padding-right: 0px;">
                         <div class="easy-autocomplete eac-description" style="width: 553px;">
-                          <input placeholder="Search Stock Ticker" id='search_input' class="form-control input-lg topnavbar-search input-shadow b-r-md" id="report-search" type="text" name="term" autocomplete="off"><div class="easy-autocomplete-container" id="eac-container-report-search"><ul></ul></div></div>
+                          <input placeholder="Search Stock Ticker" id='search_input' class="form-control input-lg topnavbar-search input-shadow b-r-md" id="report-search" type="text" name="term" autocomplete="off">
+                          <div class="easy-autocomplete-container" id="eac-container-report-search"><ul></ul></div></div>
                         </div>
                         <div class="col-sm-4 col-md-3" style="padding-right: 0px;">
                           <button type="submit" id='search_ticker' class="btn btn-primary input-lg btn-primary-shadow subscribe-button">

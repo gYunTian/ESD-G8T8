@@ -1,5 +1,5 @@
 <?php
-    session_start();
+  session_start();
 ?>
 
 <html>
@@ -22,18 +22,20 @@
     .bg-1 { 
         background-color: #132235; /* Header */
         color: #ffffff;
+        padding: 20px;
     }
     .bg-3 { 
         background-color: #ffffff; /* White */
         color: #555555;
+        margin: 50px;
     }
     .bg-4 { 
         background-color: #132235; /* Footer */
         color: #fff;
     }
     .container-fluid {
-        padding-top: 70px;
-        padding-bottom: 70px;
+        padding-top: 50px;
+        padding-bottom: 50px;
     }
 
     thead {
@@ -43,6 +45,10 @@
     tbody {
     color: black;
     text-align: center;
+    }
+
+    #left {
+      align-self: center;
     }
 
     </style>
@@ -70,6 +76,34 @@
 
 </head>
 <body onload="startDate()">
+
+<div class="container-fluid bg-1 text-center">
+  <a href="./home.php"><img height="150" width="150" alt="G8T8 Logo" class="img-responsive logo-img" src="./resources/g8t8.png"></a>
+  <div id="report-search">
+  <div class="col-md-4" style="padding-right: 0px;"></div>
+    <div class="col-md-3" style="padding-right:0px;">
+      <div class="easy-autocomplete eac-description" style="width: 553px;">
+                          <input placeholder="Search Stock Ticker" id='search_input' class="form-control input-lg topnavbar-search input-shadow b-r-md" id="report-search" type="text" name="term" autocomplete="off">
+                          <div class="easy-autocomplete-container" id="eac-container-report-search"></div></div>
+                        </div>
+                        <div class="col-md-1" style="padding-left: 0px;">
+                          <button type="submit" id='search_ticker' class="btn btn-primary input-lg btn-primary-shadow subscribe-button">
+                            Search
+                          </button>
+                        </div>
+                    </div>
+                    <span id='error' style="font-size: large; display: none; margin-top: 5px; color: rgb(223, 62, 94);">Ticker not found!</span>
+                  <!-- </form> -->          
+                </div>
+              </div>
+
+</div>
+
+
+
+
+
+
 <!-- First Container -->
 <div class="container-fluid bg-1 text-center">
   <h1 class="margin">Hello, <?php echo ucfirst($_SESSION['username']); ?></h1>
@@ -125,7 +159,10 @@
   <p>© 2020 G8T8</p> 
 </footer>
 
-</body>    
+</body> 
+
+<script type="text/javascript" src="./scripts/check.js"></script>
+
 </html>
 
 

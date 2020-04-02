@@ -1,3 +1,15 @@
+<?php 
+    session_start();
+
+    if(!isset($_SESSION['username']))
+    {
+      $message = "Sign in to access your account.";
+    }
+    else {
+      $message = "You are logged in.";
+    }
+?>
+
 <!DOCTYPE html>
 <!-- saved from url=(0041)https://www.discoverci.com/company-search -->
 <html>
@@ -60,6 +72,10 @@
           .color::-webkit-input-placeholder {
               color: #F23535
           }
+
+          .left {
+              align-content: ;
+          }
         </style>
 
         <script>
@@ -87,14 +103,19 @@
   <body class="gray-bg landing-page body-small  pace-done" onload="startDate()">
     <div class="navbar-wrapper blue-section">
       <nav class="navbar contentNavigation">
-          <div class="container-fluid"><div class="navbar-header"><a href="./home.html"><img height="120" width="120" alt="G8T8 Logo" class="img-responsive logo-img" src="./resources/g8t8.png"></a></div>
+          <div class="container-fluid">
+          <div class="navbar-header">
+          <a href="./home.php"><img height="120" width="120" alt="G8T8 Logo" class="img-responsive logo-img" src="./resources/g8t8.png"></a>
+          </div>
           </div>
       </nav>
     </div>
 
+
     <section class="blue-section">
         <div class="heroContent"><div class="container">
           <div class="row">
+          <?php echo $message; ?>
             <h1><strong><div class="col-md-12 center-block col-centered" style="padding: 5px" id='company'>Company Name<br></div></strong></h1>
             <div class="col-md-12 center-block col-centered" style="padding: 10px" id="action-bar">           
                 <input placeholder="Quantity " id='amt_box' class="form-control input-lg topnavbar-search input-shadow b-r-md" type="number" style="width: 15% !important; display: inline-block !important; margin-right: 1em !important; margin-top: 3px !important;font-size: 20px !important; vertical-align: top !important; height: 43.5px !important;" pattern="[1-9]{3}" min="1" onkeydown="return event.keyCode !== 69 && event.keyCode !== 189">
